@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>git中同一个文件由于大小写不同提交不了的问题</title>
+    <url>/2019-11-30-git%E4%B8%AD%E5%90%8C%E4%B8%80%E4%B8%AA%E6%96%87%E4%BB%B6%E7%94%B1%E4%BA%8E%E5%A4%A7%E5%B0%8F%E5%86%99%E4%B8%8D%E5%90%8C%E6%8F%90%E4%BA%A4%E4%B8%8D%E4%BA%86%E7%9A%84%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>使用git多人合作时，同一个文件,但大小写字母有部分不同时，会造成提交不了的现象。</p>
+<h2 id="原因分析"><a href="#原因分析" class="headerlink" title="原因分析"></a>原因分析</h2><p>git默认提交的时候忽略了文件名的大小写，可以通过命令查看</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">git config --<span class="keyword">get</span> core.ignorecase</span><br></pre></td></tr></table></figure>
+<h2 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h2><ul>
+<li>第一种方式：设置为不忽略大小写，就是只要大小写不同就认为是两个文件</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">git config core.ignorecase <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>第二种方式（推荐办法）: 统一写法</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//将demo.js更名为Demo.js</span></span><br><span class="line">git mv demo.js Demo.js</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>GIT</category>
+      </categories>
+      <tags>
+        <tag>git忽略文件名大小写</tag>
+        <tag>git大小写不同的冲突</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>前端实用工具Charles的使用</title>
+    <url>/2019-05-24-%E5%89%8D%E7%AB%AF%E5%AE%9E%E7%94%A8%E5%B7%A5%E5%85%B7Charles%E7%9A%84%E4%BD%BF%E7%94%A8/</url>
+    <content><![CDATA[<h3 id="Charles有什么用？"><a href="#Charles有什么用？" class="headerlink" title="Charles有什么用？"></a>Charles有什么用？</h3><p>下面是官方的简介：</p>
+<blockquote>
+<p>Charles是一个HTTP代理/ HTTP监视器/反向代理，使开发人员能够查看其机器和Internet之间的所有HTTP和SSL / HTTPS流量。这包括请求，响应和HTTP标头（包含cookie和缓存信息）</p>
+</blockquote>
+<p>详情请移步官网：<a href="https://www.charlesproxy.com/" target="_blank" rel="noopener">https://www.charlesproxy.com/</a></p>
+<p>Charles是一个非常强大的工具，功能有很多，小编只对自己已经体验过的功能做一个记录。<br><a id="more"></a></p>
+<h3 id="Charles的下载安装"><a href="#Charles的下载安装" class="headerlink" title="Charles的下载安装"></a>Charles的下载安装</h3><p>下载安装这种小事，相信大家都会就不啰嗦了，值得一提的是Charles是收费软件，可以免费试用30天的时间, 临时体验研究一下时间足够了，如果你想长期使用有两个方法：</p>
+<ul>
+<li><p>购买授权</p>
+<p>推荐使用正版，请认准唯一官网 <a href="https://www.charlesproxy.com" target="_blank" rel="noopener">https://www.charlesproxy.com</a>; 不要上当受骗了</p>
+</li>
+<li><p>破解使用</p>
+<p>请参考：<a href="https://www.zzzmode.com/mytools/charles/" target="_blank" rel="noopener">https://www.zzzmode.com/mytools/charles/</a></p>
+</li>
+</ul>
+<h3 id="模拟后端接口"><a href="#模拟后端接口" class="headerlink" title="模拟后端接口"></a>模拟后端接口</h3><p>目前基本都是前后端分离，在后端的接口没有开发完成之前，前端需要根据接口定义的规范模拟接口数据，Charles的tools中Map Local工具可以很方便的实现这个更能</p>
+<ul>
+<li>接口配置</li>
+</ul>
+<ol>
+<li><p>打开tools中的Map Local工具</p>
+ <img src="/2019-05-24-前端实用工具Charles的使用/mock1.png">
+</li>
+<li><p>点击add按钮,进入配置界面,如图配置好后点击ok即可，请确保接口前的复选框和左上角的Enable Map Local前的复选框为选中状态</p>
+ <img src="/2019-05-24-前端实用工具Charles的使用/mock2.png">
+ <img src="/2019-05-24-前端实用工具Charles的使用/mock4.png">
+</li>
+<li><p>打开浏览器输入配置好的接口地址：<a href="http://www.api.com/userinfo" target="_blank" rel="noopener">www.api.com/userinfo</a> 就可以获取到你定义好的接口数据，如图：</p>
+ <img src="/2019-05-24-前端实用工具Charles的使用/mock3.png">
+</li>
+</ol>
+<p>到这里我们的接口就配置好了，那我们用代码来请求一下试试好不好用</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">fetch(<span class="string">'http://www.api.com/userinfo'</span>).then(<span class="function"><span class="params">res</span>=&gt;</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> res.json()</span><br><span class="line">&#125;).then(<span class="function"><span class="params">data</span>=&gt;</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(data)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>如图报了跨域错误</p>
+<img src="/2019-05-24-前端实用工具Charles的使用/mock5.png">
+<h3 id="实现跨域请求"><a href="#实现跨域请求" class="headerlink" title="实现跨域请求"></a>实现跨域请求</h3><p>我们用CORS方式来实现跨域，需要在响应头中加入Access-Control-Allow-Origin字段，Charles中的Rewrite工具可以满足这个需求</p>
+<p>打开tools中的Rewrite工具，打开配置界面后按照以下步骤设置</p>
+<ul>
+<li>选中Enable Rewrite前的复选框</li>
+<li>点击add按钮增加一个配置项</li>
+<li>在配置项中，点击界面最下面的add按钮进入Rewrite Rule界面，如图进行配置</li>
+</ul>
+<img src="/2019-05-24-前端实用工具Charles的使用/mock6.png">
+<img src="/2019-05-24-前端实用工具Charles的使用/mock7.png">
+<p>配置好后点击ok返回主界面即可，现在运行上面的代码就可以成功获得数据了</p>
+<blockquote>
+<p>ps: 这里只是模拟数据为了方便Access-Control-Allow-Origin的值设置为*了。</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>实用工具</category>
+      </categories>
+      <tags>
+        <tag>Charles</tag>
+        <tag>接口模拟</tag>
+        <tag>数据mock</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>koa-body中间件实现图片上传接口</title>
+    <url>/2019-05-24-koa-body%E4%B8%AD%E9%97%B4%E4%BB%B6%E5%AE%9E%E7%8E%B0%E5%9B%BE%E7%89%87%E4%B8%8A%E4%BC%A0%E6%8E%A5%E5%8F%A3/</url>
+    <content><![CDATA[<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> Koa = <span class="built_in">require</span>(<span class="string">'koa'</span>)</span><br><span class="line"><span class="keyword">const</span> Router = <span class="built_in">require</span>(<span class="string">'koa-router'</span>)</span><br><span class="line"><span class="keyword">const</span> koaBody = <span class="built_in">require</span>(<span class="string">'koa-body'</span>)</span><br><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>)</span><br><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>)</span><br><span class="line"><span class="keyword">const</span> app = <span class="keyword">new</span> Koa()</span><br><span class="line"><span class="keyword">const</span> router = <span class="keyword">new</span> Router();</span><br><span class="line"></span><br><span class="line">app.use(koaBody(&#123;</span><br><span class="line">    multipart: <span class="literal">true</span>,</span><br><span class="line">    formidable: &#123;</span><br><span class="line">        maxFileSize: <span class="number">200</span>*<span class="number">1024</span>*<span class="number">1024</span>    <span class="comment">// 设置上传文件大小最大限制，默认2M</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;));</span><br><span class="line"></span><br><span class="line">router.post(<span class="string">'/upload'</span>, <span class="keyword">async</span> (ctx, next) =&gt; &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> imgPath = <span class="string">'img/'</span></span><br><span class="line">    <span class="comment">// 上传多个文件</span></span><br><span class="line">    <span class="keyword">let</span> files = ctx.request.files.file; <span class="comment">// 获取上传文件</span></span><br><span class="line">    <span class="keyword">if</span>(!<span class="built_in">Array</span>.isArray(files))&#123;</span><br><span class="line">        files = [files]</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> file <span class="keyword">of</span> files) &#123;</span><br><span class="line">      <span class="comment">// 创建可读流</span></span><br><span class="line">      <span class="keyword">const</span> reader = fs.createReadStream(file.path);</span><br><span class="line">      <span class="comment">// 获取上传文件扩展名</span></span><br><span class="line">      <span class="keyword">let</span> filePath = path.join(__dirname, imgPath) + <span class="string">`/<span class="subst">$&#123;file.name&#125;</span>`</span>;</span><br><span class="line">      <span class="comment">// 创建可写流</span></span><br><span class="line">      <span class="keyword">const</span> upStream = fs.createWriteStream(filePath);</span><br><span class="line">      <span class="comment">// 可读流通过管道写入可写流</span></span><br><span class="line">      reader.pipe(upStream);</span><br><span class="line">    &#125;</span><br><span class="line">   <span class="keyword">return</span> ctx.body = <span class="string">"上传成功！"</span>;</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">app.use(router.routes())</span><br><span class="line">    .use(router.allowedMethods());</span><br><span class="line"></span><br><span class="line">app.listen(<span class="number">3000</span>, () =&gt; &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'starting at port 3000'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>koa</category>
+      </categories>
+      <tags>
+        <tag>koa</tag>
+        <tag>koa-body</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>小程序开发时单位的转换px转rpx</title>
+    <url>/2019-05-24-%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E6%97%B6%E5%8D%95%E4%BD%8D%E7%9A%84%E8%BD%AC%E6%8D%A2px%E8%BD%ACrpx/</url>
+    <content><![CDATA[<h2 id="rpx的官方概念"><a href="#rpx的官方概念" class="headerlink" title="rpx的官方概念"></a>rpx的官方概念</h2><p>rpx单位是微信小程序中css的尺寸单位，rpx可以根据屏幕宽度进行自适应。规定屏幕宽为750rpx。如在 iPhone6 上，屏幕宽度为375px，共有750个物理像素，则750rpx = 375px = 750物理像素，1rpx = 0.5px = 1物理像素。</p>
+<img src="/2019-05-24-小程序开发时单位的转换px转rpx/rpx.png">
+<p>建议： 开发微信小程序时设计师可以用 iPhone6 作为视觉稿的标准。<br><a id="more"></a></p>
+<h2 id="我的理解"><a href="#我的理解" class="headerlink" title="我的理解"></a>我的理解</h2><p>rpx的标准是在假设手机的屏幕宽度为750rpx的基础上定义的，如果手机屏幕宽度正好是750px的时候，1rpx = 1px，也就是说设计稿宽度是750px时，1px = 1rpx，设置时按照1比1设置就可以完美还原;</p>
+<p>如果设计稿的宽度不是750px时，转换公式如下：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> imgWidth = <span class="number">1125</span>; <span class="comment">//假设设计稿宽度为1125</span></span><br><span class="line"><span class="keyword">const</span> scale = <span class="number">750</span>/<span class="number">1125</span>; <span class="comment">//求出1px等于多少rpx</span></span><br><span class="line"><span class="keyword">const</span> divWidth = <span class="string">'50px'</span> <span class="comment">//假设设计稿中的一个div宽度为50px</span></span><br><span class="line"><span class="keyword">const</span> wxDivWidth = <span class="number">50</span> * scale = <span class="number">33.3333</span>; <span class="comment">//小程序中应该设置成33.3333rpx;</span></span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>微信</category>
+      </categories>
+      <tags>
+        <tag>微信小程序</tag>
+        <tag>px转rpx</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>微信公众号js-sdk使用流程</title>
+    <url>/2019-05-24-%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7js-sdk%E4%BD%BF%E7%94%A8%E6%B5%81%E7%A8%8B/</url>
+    <content><![CDATA[<blockquote>
+<p>微信JS-SDK是微信公众平台 面向网页开发者提供的基于微信内的网页开发工具包。</p>
+</blockquote>
+<blockquote>
+<p>通过使用微信JS-SDK，网页开发者可借助微信高效地使用拍照、选图、语音、位置等手机系统的能力，同时可以直接使用微信分享、扫一扫、卡券、支付等微信特有的能力，为微信用户提供更优质的网页体验。</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="步骤一：微信公众号后台做相关设置"><a href="#步骤一：微信公众号后台做相关设置" class="headerlink" title="步骤一：微信公众号后台做相关设置"></a>步骤一：微信公众号后台做相关设置</h2><ul>
+<li>接口配置信息</li>
+</ul>
+<img src="/2019-05-24-微信公众号js-sdk使用流程/jssdk_step1.1.png">
+<p>如图配置两个参数：</p>
+<ul>
+<li><p>url：配置一个后台接口，微信会带4个参数访问这个接口，后台需要拿到参数做验证后返回参数中的echostr才能验证成功</p>
+</li>
+<li><p>token: 自定义的字符串，后台做验证时需要用到</p>
+</li>
+</ul>
+<p>如图配置的话微信的访问链接如下：</p>
+<p><a href="http://245691q6b5.zicp.vip/wx?signature=da9c31d92c7d6368700dff3ff7fbc64490b14f4d&amp;echostr=4513441039712648567&amp;timestamp=1555868951&amp;nonce=228899091" target="_blank" rel="noopener">http://245691q6b5.zicp.vip/wx?signature=da9c31d92c7d6368700dff3ff7fbc64490b14f4d&amp;echostr=4513441039712648567&amp;timestamp=1555868951&amp;nonce=228899091</a></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">//http://245691q6b5.zicp.vip/wx接口操作如下</span></span><br><span class="line"><span class="comment">//我的后台使用koa2</span></span><br><span class="line">router.get(<span class="string">'/wx'</span>, <span class="keyword">async</span> (ctx, next) =&gt; &#123;</span><br><span class="line">    <span class="comment">//1.解析参数</span></span><br><span class="line">    <span class="keyword">const</span> querystring = ctx.querystring;</span><br><span class="line">    <span class="keyword">const</span> tokenParams = getParams(querystring);</span><br><span class="line">    <span class="keyword">const</span> signature = tokenParams[<span class="string">'signature'</span>];</span><br><span class="line">    <span class="keyword">const</span> echostr = tokenParams[<span class="string">'echostr'</span>];</span><br><span class="line">    <span class="keyword">const</span> timestamp = tokenParams[<span class="string">'timestamp'</span>];</span><br><span class="line">    <span class="keyword">const</span> nonce = tokenParams[<span class="string">'nonce'</span>];</span><br><span class="line">    <span class="keyword">const</span> token = <span class="string">'wanglaowu'</span>; <span class="comment">//如图配置的自定义token</span></span><br><span class="line">    <span class="comment">//2.token, timestamp, nonce排序后的字符串通过sha1加密</span></span><br><span class="line">    <span class="keyword">let</span> str = [token, timestamp, nonce].sort().join(<span class="string">''</span>);</span><br><span class="line">    <span class="keyword">let</span> sha = sha1(str);</span><br><span class="line">    <span class="comment">//3.加密后的字符串和signature比对，如果相等说明是微信的访问，返回echostr，即可验证成功，返回其他值验证失败。</span></span><br><span class="line">    <span class="keyword">if</span> (sha == signature) &#123;</span><br><span class="line">        ctx.body = echostr;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        ctx.body = <span class="string">'wrong'</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//ps:可以不进行验证直接返回echostr也可以验证成功，但不建议这样做。</span></span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getParams</span>(<span class="params">querystring</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> rs = &#123;&#125;</span><br><span class="line">    <span class="keyword">const</span> kvArr = querystring.split(<span class="string">'&amp;'</span>);</span><br><span class="line">    kvArr.forEach(<span class="function"><span class="params">item</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">const</span> temp = item.split(<span class="string">'='</span>)</span><br><span class="line">        <span class="keyword">const</span> key = temp[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">const</span> val = temp[<span class="number">1</span>];</span><br><span class="line">        rs[key] = val</span><br><span class="line">    &#125;)</span><br><span class="line">    <span class="keyword">return</span> rs</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>做好这些准备后，点击提交会有配置成功的提示。</p>
+<ul>
+<li>配置JS接口安全域名</li>
+</ul>
+<img src="/2019-05-24-微信公众号js-sdk使用流程/jssdk_step1.2.png">
+<p>如图不需要http://或https://,点击提交即可</p>
+<h2 id="步骤二：后端获取使用weixin-js-sdk需要的配置参数"><a href="#步骤二：后端获取使用weixin-js-sdk需要的配置参数" class="headerlink" title="步骤二：后端获取使用weixin js-sdk需要的配置参数"></a>步骤二：后端获取使用weixin js-sdk需要的配置参数</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">router.get(<span class="string">'/wxapiconfig'</span>, <span class="keyword">async</span> (ctx, next) =&gt; &#123;</span><br><span class="line">    <span class="comment">//1.获取accessToken，用于获取访问wx的api的凭证；</span></span><br><span class="line">    <span class="keyword">const</span> accessToken = <span class="keyword">await</span> getAccessToken()</span><br><span class="line">    <span class="comment">//2.获取jsapiTicket 用于访问wx的api的凭证</span></span><br><span class="line">    <span class="keyword">const</span> jsapiTicket = <span class="keyword">await</span> getJsapiTicket(accessToken)</span><br><span class="line">    <span class="comment">//3.生成时间戳和随机字符串</span></span><br><span class="line">    <span class="keyword">const</span> nonceStr = randomString(<span class="number">16</span>)<span class="comment">//随机字符串</span></span><br><span class="line">    <span class="keyword">const</span> timestamp = (<span class="built_in">Date</span>.now()/<span class="number">1000</span>).toFixed();<span class="comment">//时间戳</span></span><br><span class="line">    <span class="keyword">const</span> url = <span class="string">'http://245691q6b5.zicp.vip/wx'</span></span><br><span class="line">    <span class="comment">//4.按照微信官方要求拼接字符串</span></span><br><span class="line">    <span class="keyword">const</span> str = <span class="string">`jsapi_ticket=<span class="subst">$&#123;jsapiTicket&#125;</span>&amp;noncestr=<span class="subst">$&#123;nonceStr&#125;</span>&amp;timestamp=<span class="subst">$&#123;timestamp&#125;</span>&amp;url=<span class="subst">$&#123;url&#125;</span>`</span></span><br><span class="line">    <span class="comment">//5.sha1加密后获得signature参数</span></span><br><span class="line">    <span class="keyword">const</span> signature = sha1(str);</span><br><span class="line">    <span class="comment">//6.通过官方工具验证signature的正确性：//https://mp.weixin.qq.com/debug/cgi-bin/sandbox?t=jsapisign</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//7.将参数返给前端</span></span><br><span class="line">    ctx.body = <span class="built_in">JSON</span>.stringify(&#123;</span><br><span class="line">        jsapiTicket,</span><br><span class="line">        nonceStr,</span><br><span class="line">        timestamp,</span><br><span class="line">        signature,</span><br><span class="line">        jsApiList: [<span class="string">'updateAppMessageShareData'</span>] <span class="comment">//需要请求的接口，也可以在前端使用时增加此参数</span></span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getAccessToken</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> url = <span class="string">`https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&amp;appid=<span class="subst">$&#123;appid&#125;</span>&amp;secret=<span class="subst">$&#123;appsecret&#125;</span>`</span></span><br><span class="line">    <span class="keyword">return</span> Superagent.get(url).then(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">JSON</span>.parse(res.text).access_token</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getJsapiTicket</span>(<span class="params">accessToken</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> url = <span class="string">`https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=<span class="subst">$&#123;accessToken&#125;</span>&amp;type=jsapi`</span></span><br><span class="line">    <span class="keyword">return</span> Superagent.get(url).then(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">JSON</span>.parse(res.text).ticket</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">randomString</span>(<span class="params">len</span>) </span>&#123;</span><br><span class="line">    len = len || <span class="number">32</span>;</span><br><span class="line">    <span class="keyword">var</span> chars = <span class="string">'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678'</span>;    </span><br><span class="line">    <span class="keyword">var</span> maxPos = chars.length;</span><br><span class="line">    <span class="keyword">var</span> pwd = <span class="string">''</span>;</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; len; i++) &#123;</span><br><span class="line">        pwd += chars.charAt(<span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * maxPos));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> pwd;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="步骤三：前端拿到参数后使用js-sdk进行接口调用"><a href="#步骤三：前端拿到参数后使用js-sdk进行接口调用" class="headerlink" title="步骤三：前端拿到参数后使用js-sdk进行接口调用"></a>步骤三：前端拿到参数后使用js-sdk进行接口调用</h2><ul>
+<li><p>在需要调用JS接口的页面引入如下JS文件，（支持https）：<a href="http://res.wx.qq.com/open/js/jweixin-1.4.0.js" target="_blank" rel="noopener">http://res.wx.qq.com/open/js/jweixin-1.4.0.js</a></p>
+</li>
+<li><p>所有需要使用JS-SDK的页面必须先注入配置信息，否则将无法调用（同一个url仅需调用一次，对于变化url的SPA的web app可在每次url变化时进行调用</p>
+</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">wx.config(&#123;</span><br><span class="line">    debug: <span class="literal">true</span>, <span class="comment">// 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。</span></span><br><span class="line">    appId: <span class="string">''</span>, <span class="comment">// 必填，公众号的唯一标识</span></span><br><span class="line">    timestamp: , <span class="comment">// 必填，生成签名的时间戳（上一步中后端返回的参数）</span></span><br><span class="line">    nonceStr: <span class="string">''</span>, <span class="comment">// 必填，生成签名的随机串（上一步中后端返回的参数）</span></span><br><span class="line">    signature: <span class="string">''</span>,<span class="comment">// 必填，签名（上一步中后端返回的参数）</span></span><br><span class="line">    jsApiList: [] <span class="comment">// 必填，需要使用的JS接口列表（上一步中后端返回的参数，也可在前端配置此参数）</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<ul>
+<li>接口调用见官网使用教程：<a href="https://mp.weixin.qq.com/wiki?t=resource/res_main&amp;id=mp1421141115" target="_blank" rel="noopener">https://mp.weixin.qq.com/wiki?t=resource/res_main&amp;id=mp1421141115</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>微信</category>
+      </categories>
+      <tags>
+        <tag>微信公众号</tag>
+        <tag>js-sdk</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>微信公众号网页授权获取用户信息的流程</title>
+    <url>/2019-05-20-%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7%E7%BD%91%E9%A1%B5%E6%8E%88%E6%9D%83%E8%8E%B7%E5%8F%96%E7%94%A8%E6%88%B7%E4%BF%A1%E6%81%AF/</url>
+    <content><![CDATA[<blockquote>
+<p>如果用户在微信客户端中访问第三方网页，公众号可以通过微信网页授权机制，来获取用户基本信息，进而实现业务逻辑。</p>
+</blockquote>
+<blockquote>
+<p>1、在微信公众号请求用户网页授权之前，开发者需要先到公众平台官网中的“开发 - 接口权限 - 网页服务 - 网页帐号 - 网页授权获取用户基本信息”的配置选项中，修改授权回调域名。请注意，这里填写的是域名（是一个字符串），而不是URL，因此请勿加 http:// 等协议头；</p>
+</blockquote>
+<blockquote>
+<p>2、授权回调域名配置规范为全域名，比如需要网页授权的域名为：<a href="http://www.qq.com" target="_blank" rel="noopener">www.qq.com</a>; 配置以后此域名下面的页面 <a href="http://www.qq.com/music.html" target="_blank" rel="noopener">http://www.qq.com/music.html</a> 、 <a href="http://www.qq.com/login.html" target="_blank" rel="noopener">http://www.qq.com/login.html</a> 都可以进行OAuth2.0鉴权。但<a href="http://pay.qq.com" target="_blank" rel="noopener">http://pay.qq.com</a> 、 <a href="http://music.qq.com" target="_blank" rel="noopener">http://music.qq.com</a> 、 <a href="http://qq.com无法进行OAuth2.0鉴权" target="_blank" rel="noopener">http://qq.com无法进行OAuth2.0鉴权</a></p>
+</blockquote>
+<a id="more"></a>
+<h2 id="步骤一：公众号后台相关设置"><a href="#步骤一：公众号后台相关设置" class="headerlink" title="步骤一：公众号后台相关设置"></a>步骤一：公众号后台相关设置</h2><img src="/2019-05-20-微信公众号网页授权获取用户信息/OAuth_step1.1.png">
+<img src="/2019-05-20-微信公众号网页授权获取用户信息/OAuth_step1.2.png">
+<h2 id="步骤二：用户同意授权，获取code码，可以是前端获取，也可以是后端获取"><a href="#步骤二：用户同意授权，获取code码，可以是前端获取，也可以是后端获取" class="headerlink" title="步骤二：用户同意授权，获取code码，可以是前端获取，也可以是后端获取"></a>步骤二：用户同意授权，获取code码，可以是前端获取，也可以是后端获取</h2><ul>
+<li>获取用户授权需要按照微信规定拼装链接，让用户访问，链接如下：</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> appid = <span class="string">"wx3b0e58d4d2dbea9q"</span>;  <span class="comment">//公众号后台获取</span></span><br><span class="line"><span class="keyword">const</span> redirectUri = <span class="built_in">encodeURIComponent</span>(<span class="string">"http://245691q6b5.zicp.vip"</span>)<span class="comment">//微信会带code码访问这个链接</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> url = <span class="string">`https://open.weixin.qq.com/connect/oauth2/authorize?appid=<span class="subst">$&#123;appid&#125;</span>&amp;redirect_uri=<span class="subst">$&#123;redirectUri&#125;</span>&amp;response_type=code&amp;scope=snsapi_userinfo&amp;state=STATE#wechat_redirect`</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>前端获取</li>
+</ul>
+<p>如果不是每次进入页面都要从微信获取code码时（用户信息），建议在前端获取，需要时才改变浏览器链接让用户访问链接获取授权，把code码传给后端获取用户信息。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> querystring = getQueryString()</span><br><span class="line"><span class="keyword">let</span> code = querystring.code;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(!code)&#123;</span><br><span class="line">    location.href = url;</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    https.get(<span class="string">'http://127.0.0.1:3000/auth'</span>,&#123;code&#125;).then(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="built_in">console</span>.log(res)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getQueryString</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> url = location.search;</span><br><span class="line">    <span class="keyword">const</span> rs = &#123;&#125;</span><br><span class="line">    <span class="keyword">if</span>(url.indexOf(<span class="string">'?'</span>) === <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">const</span> querystring = url.substr(<span class="number">1</span>);</span><br><span class="line">        <span class="keyword">const</span> kvArr = querystring.split(<span class="string">'&amp;'</span>);</span><br><span class="line">        kvArr.forEach(<span class="function"><span class="params">item</span> =&gt;</span> &#123;</span><br><span class="line">            <span class="keyword">const</span> temp = item.split(<span class="string">'='</span>)</span><br><span class="line">            <span class="keyword">const</span> key = temp[<span class="number">0</span>];</span><br><span class="line">            <span class="keyword">const</span> val = temp[<span class="number">1</span>];</span><br><span class="line">            rs[key] = val</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> rs</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>后端获取</li>
+</ul>
+<p>如果每次都要获取code码，就让用户只要进入页面就访问接口链接，但这时的redirectUri要配置成后端接口的链接，也就是说微信会带着code码访问后端接口，后端直接获取code码。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">//后端使用koa2</span></span><br><span class="line"><span class="comment">//Superagent时一个后端的http请求中间件</span></span><br><span class="line">router.get(<span class="string">'/auth'</span>, <span class="keyword">async</span> (ctx, next) =&gt; &#123;</span><br><span class="line">    code = ctx.querystring.split(<span class="string">'&amp;'</span>)[<span class="number">0</span>].split(<span class="string">'='</span>)[<span class="number">1</span>];</span><br><span class="line">    <span class="comment">// 使用code获取openid和access_token </span></span><br><span class="line">    <span class="keyword">await</span> Superagent</span><br><span class="line">        .get(<span class="string">`https://api.weixin.qq.com/sns/oauth2/access_token?appid=<span class="subst">$&#123;appid&#125;</span>&amp;secret=<span class="subst">$&#123;appsecret&#125;</span>&amp;code=<span class="subst">$&#123;code&#125;</span>&amp;grant_type=authorization_code`</span>)</span><br><span class="line">        .then(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span><br><span class="line">            <span class="keyword">let</span> result = <span class="built_in">JSON</span>.parse(res.text)</span><br><span class="line">            access_token = result.access_token</span><br><span class="line">            openid = result.openid</span><br><span class="line">        &#125;)</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 使用ACCESS_TOKEN和openid获取userinfo</span></span><br><span class="line">    <span class="keyword">await</span> Superagent</span><br><span class="line">        .get(<span class="string">`https://api.weixin.qq.com/sns/userinfo?access_token=<span class="subst">$&#123;access_token&#125;</span>&amp;openid=<span class="subst">$&#123;openid&#125;</span>&amp;lang=zh_CN`</span>)</span><br><span class="line">        .then(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span><br><span class="line">            <span class="comment">//userinfo返回给前端</span></span><br><span class="line">            userinfo = <span class="built_in">JSON</span>.parse(res.text)</span><br><span class="line">            ctx.body = res.text</span><br><span class="line">        &#125;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>官方教程：<a href="https://mp.weixin.qq.com/wiki?t=resource/res_main&amp;id=mp1421140842" target="_blank" rel="noopener">https://mp.weixin.qq.com/wiki?t=resource/res_main&amp;id=mp1421140842</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>微信</category>
+      </categories>
+      <tags>
+        <tag>微信公众号</tag>
+        <tag>网页授权</tag>
+      </tags>
+  </entry>
+</search>
