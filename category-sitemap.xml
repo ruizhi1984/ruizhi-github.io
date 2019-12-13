@@ -9,7 +9,7 @@
 
     <url>
         <loc>https://www.ruizhi.work/categories/Nginx/</loc>
-        <lastmod>2019-12-13T10:33:16.984Z</lastmod>
+        <lastmod>2019-12-13T19:56:07.888Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
@@ -22,7 +22,7 @@
     </url>
 
     <url>
-        <loc>https://www.ruizhi.work/categories/koa/</loc>
+        <loc>https://www.ruizhi.work/categories/%E5%AE%9E%E7%94%A8%E5%B7%A5%E5%85%B7/</loc>
         <lastmod>2019-11-30T05:36:07.437Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
@@ -36,7 +36,7 @@
     </url>
 
     <url>
-        <loc>https://www.ruizhi.work/categories/%E5%AE%9E%E7%94%A8%E5%B7%A5%E5%85%B7/</loc>
+        <loc>https://www.ruizhi.work/categories/koa/</loc>
         <lastmod>2019-11-30T05:36:07.437Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
