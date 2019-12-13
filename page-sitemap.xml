@@ -8,14 +8,14 @@
     </url>
     
     <url>
-        <loc>https://www.ruizhi.work/tags/</loc>
+        <loc>https://www.ruizhi.work/categories/</loc>
         <lastmod>2019-11-30T05:36:07.437Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
     
     <url>
-        <loc>https://www.ruizhi.work/categories/</loc>
+        <loc>https://www.ruizhi.work/tags/</loc>
         <lastmod>2019-11-30T05:36:07.437Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
