@@ -3,8 +3,36 @@
 
 
     <url>
-        <loc>https://www.ruizhi.work/tags/nginx/</loc>
-        <lastmod>2019-12-13T19:56:07.888Z</lastmod>
+        <loc>https://www.ruizhi.work/tags/turf/</loc>
+        <lastmod>2019-12-15T22:08:36.019Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://www.ruizhi.work/tags/MapboxGl/</loc>
+        <lastmod>2019-12-15T22:08:36.019Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://www.ruizhi.work/tags/Nginx/</loc>
+        <lastmod>2019-12-15T15:26:49.900Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://www.ruizhi.work/tags/Ftp/</loc>
+        <lastmod>2019-12-15T15:26:38.389Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://www.ruizhi.work/tags/Linux/</loc>
+        <lastmod>2019-12-15T15:26:38.389Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
@@ -45,21 +73,14 @@
     </url>
 
     <url>
-        <loc>https://www.ruizhi.work/tags/%E6%95%B0%E6%8D%AEmock/</loc>
+        <loc>https://www.ruizhi.work/tags/koa-body/</loc>
         <lastmod>2019-11-30T05:36:07.437Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
-        <loc>https://www.ruizhi.work/tags/%E6%8E%A5%E5%8F%A3%E6%A8%A1%E6%8B%9F/</loc>
-        <lastmod>2019-11-30T05:36:07.437Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://www.ruizhi.work/tags/Charles/</loc>
+        <loc>https://www.ruizhi.work/tags/koa/</loc>
         <lastmod>2019-11-30T05:36:07.437Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
@@ -80,14 +101,21 @@
     </url>
 
     <url>
-        <loc>https://www.ruizhi.work/tags/koa-body/</loc>
+        <loc>https://www.ruizhi.work/tags/%E6%95%B0%E6%8D%AEmock/</loc>
         <lastmod>2019-11-30T05:36:07.437Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
-        <loc>https://www.ruizhi.work/tags/koa/</loc>
+        <loc>https://www.ruizhi.work/tags/%E6%8E%A5%E5%8F%A3%E6%A8%A1%E6%8B%9F/</loc>
+        <lastmod>2019-11-30T05:36:07.437Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://www.ruizhi.work/tags/Charles/</loc>
         <lastmod>2019-11-30T05:36:07.437Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>

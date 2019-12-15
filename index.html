@@ -258,7 +258,7 @@
       
     
 
-    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签<span class="badge">13</span></a>
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签<span class="badge">17</span></a>
 
   </li>
         
@@ -277,7 +277,7 @@
       
     
 
-    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类<span class="badge">5</span></a>
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类<span class="badge">7</span></a>
 
   </li>
         
@@ -296,7 +296,7 @@
       
     
 
-    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">8</span></a>
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">9</span></a>
 
   </li>
         
@@ -396,6 +396,210 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.ruizhi.work/2019-12-15-mapbox-gl空间分析插件turf-js使用笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="睿&智">
+      <meta itemprop="description" content="努力工作，快乐生活！">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="睿智大前端">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019-12-15-mapbox-gl空间分析插件turf-js使用笔记/" class="post-title-link" itemprop="url">mapbox-gl空间分析插件turf.js使用笔记</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-12-15 23:24:55" itemprop="dateCreated datePublished" datetime="2019-12-15T23:24:55+08:00">2019-12-15</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-12-16 06:08:36" itemprop="dateModified" datetime="2019-12-16T06:08:36+08:00">2019-12-16</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/MapboxGl/" itemprop="url" rel="index"><span itemprop="name">MapboxGl</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
+                <a href="/2019-12-15-mapbox-gl空间分析插件turf-js使用笔记/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019-12-15-mapbox-gl空间分析插件turf-js使用笔记/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="turf-js是干什么的？"><a href="#turf-js是干什么的？" class="headerlink" title="turf.js是干什么的？"></a>turf.js是干什么的？</h2><ul>
+<li>turf.js是一个用于空间分析和统计的JavaScript库。</li>
+<li>turf.js可以很方便的生成geojson数据。</li>
+<li>参考：<a href="https://docs.mapbox.com/help/tutorials/analysis-with-turf/" target="_blank" rel="noopener">https://docs.mapbox.com/help/tutorials/analysis-with-turf/</a></li>
+<li>官网地址：<a href="http://turfjs.org/" target="_blank" rel="noopener">http://turfjs.org/</a></li>
+</ul>
+<h2 id="如何引入项目"><a href="#如何引入项目" class="headerlink" title="如何引入项目"></a>如何引入项目</h2><ul>
+<li>全部安装和项目中引入</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//安装</span></span><br><span class="line">npm install @turf/turf</span><br><span class="line"></span><br><span class="line"><span class="comment">//一次引入多个组件</span></span><br><span class="line"><span class="keyword">import</span> &#123;point, circle, bboxPolygon, booleanPointInPolygon&#125; <span class="keyword">from</span> <span class="string">'@turf/turf'</span> </span><br><span class="line"></span><br><span class="line"><span class="comment">//一次全部引入</span></span><br><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> turf <span class="keyword">from</span> <span class="string">'@turf/turf'</span> <span class="comment">// 一次性引入</span></span><br></pre></td></tr></table></figure>
+<p>按需安装</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//只安装circle模块</span></span><br><span class="line">npm install @turf/circle</span><br><span class="line"></span><br><span class="line"><span class="comment">//中引入circle模块</span></span><br><span class="line"><span class="keyword">import</span> circle <span class="keyword">from</span> <span class="string">'@turf/circle'</span></span><br></pre></td></tr></table></figure>
+<h2 id="项目中如何使用"><a href="#项目中如何使用" class="headerlink" title="项目中如何使用"></a>项目中如何使用</h2><ul>
+<li>步骤1： 创建一个以中心点center为圆心，radius为半径单位为千米的圆的geojson数据</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* @description: 使用turf.js创建一个距离中心点一定距离的圆的geojson数据</span></span><br><span class="line"><span class="comment">* @param center &#123;Array&#125; 中心点坐标 [-75.343, 39.984]</span></span><br><span class="line"><span class="comment">* @param radius &#123;Number&#125; 圆的半径</span></span><br><span class="line"><span class="comment">* @param options &#123;Object&#125; 配置参数对象</span></span><br><span class="line"><span class="comment">* @param options.steps &#123;Number&#125; 绘制的圆分段数量，数值越大画出的越平滑，反之会有棱角默认64</span></span><br><span class="line"><span class="comment">* @param options.units &#123;String&#125; 半径的单位默认为'kilometers'，可取值：miles, kilometers, degrees, or radians</span></span><br><span class="line"><span class="comment">* @param options.properties &#123;Object&#125; geojson的属性对象</span></span><br><span class="line"><span class="comment">* @return: geojson</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createCircle</span>(<span class="params">center, radius, options</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> defaultOpts = &#123;</span><br><span class="line">        steps: <span class="number">128</span>,</span><br><span class="line">        units: <span class="string">"kilometers"</span>,</span><br><span class="line">        ...options</span><br><span class="line">      &#125;;</span><br><span class="line">      <span class="comment">// 创建圆geojson</span></span><br><span class="line">      <span class="keyword">return</span> circle(center, radius, defaultOpts);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>步骤2：将数据绘制到地图上</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">map.addLayer(&#123;</span><br><span class="line">  id: <span class="string">"position-circle-layer"</span>,</span><br><span class="line">  type: <span class="string">"fill"</span>,</span><br><span class="line">  source: &#123;</span><br><span class="line">      type:<span class="string">"geojson"</span>,</span><br><span class="line">      data: createCircle([<span class="number">0</span>,<span class="number">0</span>],<span class="number">5</span>,&#123;</span><br><span class="line">          steps: <span class="number">64</span>,</span><br><span class="line">          units: <span class="string">'miles'</span></span><br><span class="line">      &#125;)</span><br><span class="line">  &#125;,</span><br><span class="line">  paint: &#123;</span><br><span class="line">    <span class="string">"fill-color"</span>: <span class="string">"#FF3660"</span>,</span><br><span class="line">    <span class="string">"fill-opacity"</span>: <span class="number">0.3</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://www.ruizhi.work/2019-12-13-Linux云服务器搭建FTP服务/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -458,11 +662,29 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-12-14 04:02:36" itemprop="dateModified" datetime="2019-12-14T04:02:36+08:00">2019-12-14</time>
+                <time title="修改时间：2019-12-15 23:26:38" itemprop="dateModified" datetime="2019-12-15T23:26:38+08:00">2019-12-15</time>
               
             
           </span>
 
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/云服务器/" itemprop="url" rel="index"><span itemprop="name">云服务器</span></a></span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -646,7 +868,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-12-14 03:56:07" itemprop="dateModified" datetime="2019-12-14T03:56:07+08:00">2019-12-14</time>
+                <time title="修改时间：2019-12-15 23:26:49" itemprop="dateModified" datetime="2019-12-15T23:26:49+08:00">2019-12-15</time>
               
             
           </span>
@@ -1962,7 +2184,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">8</span>
+                    <span class="site-state-item-count">9</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -1989,7 +2211,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">5</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">7</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -2032,7 +2258,15 @@
                     
                       
                     
-                    <span class="site-state-item-count">13</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">17</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
