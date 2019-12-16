@@ -9,7 +9,14 @@
 
     <url>
         <loc>https://www.ruizhi.work/categories/MapboxGl/</loc>
-        <lastmod>2019-12-15T22:08:36.019Z</lastmod>
+        <lastmod>2019-12-16T09:28:33.855Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://www.ruizhi.work/categories/%E7%94%9F%E6%B4%BB%E7%90%90%E7%A2%8E/</loc>
+        <lastmod>2019-12-16T09:27:44.194Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
@@ -36,7 +43,7 @@
     </url>
 
     <url>
-        <loc>https://www.ruizhi.work/categories/koa/</loc>
+        <loc>https://www.ruizhi.work/categories/%E5%AE%9E%E7%94%A8%E5%B7%A5%E5%85%B7/</loc>
         <lastmod>2019-11-30T05:36:07.437Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
@@ -50,7 +57,7 @@
     </url>
 
     <url>
-        <loc>https://www.ruizhi.work/categories/%E5%AE%9E%E7%94%A8%E5%B7%A5%E5%85%B7/</loc>
+        <loc>https://www.ruizhi.work/categories/koa/</loc>
         <lastmod>2019-11-30T05:36:07.437Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
