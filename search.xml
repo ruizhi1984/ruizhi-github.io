@@ -1,9 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>MapboxGl Expressions学习笔记</title>
+    <url>/2019-12-18-MapboxGl-Expressions%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h2 id="什么是MapboxGl-Expressions？"><a href="#什么是MapboxGl-Expressions？" class="headerlink" title="什么是MapboxGl Expressions？"></a>什么是MapboxGl Expressions？</h2><p>MapboxGl Expressions是Mapbox GL的JS表达式，任何layout、paint或者filter的值都可以用一个expression表达式来控制不同属性或状态的feature的样式。也就是用于在视觉上区分同一层内的要素类型或创建数据可视化</p>
+<p><strong>比如：我绘制了一个中国地图，我想让不同的省份有不同的颜色，那就需要设置表达式来实现</strong></p>
+<h2 id="MapboxGl-Expressions的用途"><a href="#MapboxGl-Expressions的用途" class="headerlink" title="MapboxGl Expressions的用途"></a>MapboxGl Expressions的用途</h2><ul>
+<li>根据feature的属性设置样式：基于一个或多个数据属性指定样式规则。</li>
+<li>对feature的属性值进行计算：对源数据进行数学运算，例如执行计算以转换单位。</li>
+<li>条件判断：使用if-then逻辑，例如，根据功能中可用的属性甚至名称的长度，来决定要显示标签的确切文本。</li>
+<li>字符串操作：使用大写，小写和标题大小写转换等方式来控制标签文本，而无需编辑，重新准备和重新上传数据。</li>
+</ul>
+<a id="more"></a>
+<h2 id="MapboxGl-Expressions的语法"><a href="#MapboxGl-Expressions的语法" class="headerlink" title="MapboxGl Expressions的语法"></a>MapboxGl Expressions的语法</h2><p>Mapbox GL JS表达式使用类似Lisp的语法，使用JSON数组表示。表达式遵循以下格式：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[expression_name, argument_0, argument_1, ...]</span><br></pre></td></tr></table></figure>
+<ul>
+<li>expression_name: 表达式运算符，可以是’*’表示做乘法运算，或者’case’表示条件逻辑，类似switch语句。</li>
+<li>argument_0： 参数或别的表达式，不同的表达式参数数量不同</li>
+</ul>
+<p><strong>栗子:</strong> </p>
+<ul>
+<li>计算π * 3的平方</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[&apos;*&apos;, [&apos;pi&apos;], [&apos;^&apos;, 3, 2]]</span><br></pre></td></tr></table></figure>
+<p>本示例使用’*’表达式将两个参数相乘。第一个参数是’pi’，它是一个返回数学常数pi的表达式。第二个参数是另一个表达式：表示3的平方。它将返回3的平方乘以π。</p>
+<ul>
+<li>条件逻辑case,根据属性中’adcode’的值填充不同的颜色</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">paint: &#123;</span><br><span class="line">    <span class="string">"fill-color"</span>: [</span><br><span class="line">        <span class="comment">//表达式名称</span></span><br><span class="line">        <span class="string">"case"</span>, </span><br><span class="line">        <span class="comment">//参数1：判断每个feature中的'adcode'属性的值是否等于500237，如果为true就返回"#f00",</span></span><br><span class="line">        [<span class="string">"=="</span>, [<span class="string">"get"</span>, <span class="string">"adcode"</span>], <span class="number">500237</span>],  </span><br><span class="line">        <span class="comment">//上面条件成立时返回的值</span></span><br><span class="line">        <span class="string">"#f00"</span>,</span><br><span class="line">        <span class="comment">//这里可以增加其它条件</span></span><br><span class="line">        ... </span><br><span class="line">        <span class="comment">//前面所有条件都不成立，默认返回的值</span></span><br><span class="line">        <span class="string">"#ff0"</span> </span><br><span class="line">    ],</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>计算地标的年龄（属性中没有年龄字段，给出了地标的建造年份）</li>
+</ul>
+<p>需要用表达式计算2019 - 地标建造年份，来得到地标的年龄</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">[</span><br><span class="line">    <span class="comment">//减法运算的表达式名称</span></span><br><span class="line">    <span class="string">"-"</span>,</span><br><span class="line">    <span class="comment">//被减数</span></span><br><span class="line">    <span class="number">2019</span>,</span><br><span class="line">    <span class="comment">//减数，需要通过另一个表达式计算,属性中的年份字段是字符串，需要转换成数字</span></span><br><span class="line">    [</span><br><span class="line">        <span class="comment">//转换成数字的表达式名称</span></span><br><span class="line">        <span class="string">"number"</span>,</span><br><span class="line">        <span class="comment">//从feature的属性中取出年份的值</span></span><br><span class="line">        [<span class="string">"get"</span>,<span class="string">"year"</span>],</span><br><span class="line">        <span class="comment">//如果year没有值，默认返回2019</span></span><br><span class="line">        <span class="number">2019</span></span><br><span class="line">    ]</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="comment">//整个表达式返回2019-xxx的值</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>缩放表达式interpolate</li>
+</ul>
+<p>如果你画了一堆圆，在一个zoom级别效果还可以，但在别的zoom级别就会重叠在一起，这时就可以使用缩放表达式来解决这个问题，缩放表达式允许图层的外观随地图的zoom级别而变化。</p>
+<p>‘interpolate’表达式在输入值和输出值之间进行内插产生连续，平稳的过度</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="string">'circle-radius'</span>: [</span><br><span class="line">    <span class="comment">//插值表达式的名称</span></span><br><span class="line">    <span class="string">'interpolate'</span>,</span><br><span class="line">    <span class="comment">//在两个数值之间进行线性插值</span></span><br><span class="line">    [<span class="string">'linear'</span>], </span><br><span class="line">    <span class="comment">//对zoom级别进行插值</span></span><br><span class="line">    [<span class="string">'zoom'</span>],</span><br><span class="line">    <span class="comment">//zoom在0到10之间</span></span><br><span class="line">    <span class="number">10</span>, </span><br><span class="line">    <span class="comment">//zoom在0到10之间时的参考值</span></span><br><span class="line">    [<span class="string">'/'</span>, [<span class="string">'-'</span>, <span class="number">2017</span>, [<span class="string">'number'</span>, [<span class="string">'get'</span>, <span class="string">'Constructi'</span>], <span class="number">2017</span>]], <span class="number">30</span>],</span><br><span class="line">    <span class="comment">//zoom在10-13之间</span></span><br><span class="line">    <span class="number">13</span>, </span><br><span class="line">    <span class="comment">//zoom在10-13之间的参考值</span></span><br><span class="line">    [<span class="string">'/'</span>, [<span class="string">'-'</span>, <span class="number">2017</span>, [<span class="string">'number'</span>, [<span class="string">'get'</span>, <span class="string">'Constructi'</span>], <span class="number">2017</span>]], <span class="number">10</span>],</span><br><span class="line">],</span><br></pre></td></tr></table></figure>
+<p><strong>参考：</strong></p>
+<ul>
+<li><a href="https://docs.mapbox.com/mapbox-gl-js/style-spec/#expressions" target="_blank" rel="noopener">https://docs.mapbox.com/mapbox-gl-js/style-spec/#expressions</a></li>
+<li><a href="https://docs.mapbox.com/help/tutorials/mapbox-gl-js-expressions/#syntax" target="_blank" rel="noopener">https://docs.mapbox.com/help/tutorials/mapbox-gl-js-expressions/#syntax</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>MapboxGl</category>
+      </categories>
+      <tags>
+        <tag>mapboxgl</tag>
+        <tag>expressions</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>vue项目eslint等代码规范配置</title>
+    <url>/2019-12-18-vue%E9%A1%B9%E7%9B%AEeslint%E7%AD%89%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83%E9%85%8D%E7%BD%AE/</url>
+    <content><![CDATA[<h2 id="为什么使用ESlint"><a href="#为什么使用ESlint" class="headerlink" title="为什么使用ESlint"></a>为什么使用ESlint</h2><ul>
+<li>防止低级错误，比如格式问题，符号问题等</li>
+<li>规范代码格式，尤其在多人协作时，保持代码风格一致是非常有必要的</li>
+</ul>
+<h2 id="如何使用ESlint"><a href="#如何使用ESlint" class="headerlink" title="如何使用ESlint"></a>如何使用ESlint</h2><p>ESlint规则是可以自己配置的，自己配置的不一定是最优的，我们可以使用一个网上公认的标准</p>
+<h3 id="步骤1：安装以下插件"><a href="#步骤1：安装以下插件" class="headerlink" title="步骤1：安装以下插件"></a>步骤1：安装以下插件</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//安装eslint</span></span><br><span class="line">npm i eslint -D</span><br><span class="line"><span class="comment">//安装eslint标准配置</span></span><br><span class="line">npm i eslint-config-standard -D</span><br><span class="line"><span class="comment">//下面的插件是eslint-config-standard官方推荐安装的插件，因为它使用的校验规则要依赖这些插件</span></span><br><span class="line">npm i eslint-plugin-standard eslint-plugin-promise eslint-plugin-<span class="keyword">import</span> eslint-plugin-node -D</span><br><span class="line"><span class="comment">//eslin无法识别vue文件，所以需要安装一个插件</span></span><br><span class="line">npm i eslint-plugin-html -D</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<h3 id="步骤2：安装完成后在项目根目录创建-eslinrc文件"><a href="#步骤2：安装完成后在项目根目录创建-eslinrc文件" class="headerlink" title="步骤2：安装完成后在项目根目录创建.eslinrc文件"></a>步骤2：安装完成后在项目根目录创建.eslinrc文件</h3><figure class="highlight json"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"extends"</span>:<span class="string">"standard"</span>,</span><br><span class="line">    <span class="attr">"plugins"</span>:[</span><br><span class="line">        <span class="string">"html"</span></span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="步骤3：package-json中增加scripts配置，方便使用"><a href="#步骤3：package-json中增加scripts配置，方便使用" class="headerlink" title="步骤3：package.json中增加scripts配置，方便使用"></a>步骤3：package.json中增加scripts配置，方便使用</h3><figure class="highlight"><table><tr><td class="code"><pre><span class="line">//配置eslin要检查的文件后缀和文件夹</span><br><span class="line">"scripts": &#123;</span><br><span class="line">    "lint": "eslint --ext .js --ext .jsx --ext .vue src/",</span><br><span class="line">    "lint-fix": "eslint --fix --ext .js --ext .jsx --ext .vue src/"</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+<h3 id="步骤4：运行命令用eslint检查代码"><a href="#步骤4：运行命令用eslint检查代码" class="headerlink" title="步骤4：运行命令用eslint检查代码"></a>步骤4：运行命令用eslint检查代码</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 用eslint检查代码</span></span><br><span class="line">npm run lint</span><br><span class="line"><span class="comment">// 用eslint检查代码，并修复</span></span><br><span class="line">npm 润 lint-fix</span><br></pre></td></tr></table></figure>
+<h2 id="修改文件后自动使用eslint检查的配置"><a href="#修改文件后自动使用eslint检查的配置" class="headerlink" title="修改文件后自动使用eslint检查的配置"></a>修改文件后自动使用eslint检查的配置</h2><p>如果每次写完一堆代码后手动运行命令检查，可能会有很多地方要改，最好是每次修改代码后就能自动检查一次，有问题马上改掉，这样也可以帮助我们养成良好的编码习惯</p>
+<h3 id="步骤1：安装以下工具"><a href="#步骤1：安装以下工具" class="headerlink" title="步骤1：安装以下工具"></a>步骤1：安装以下工具</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">npm i eslint-loader babel-eslint -D</span><br></pre></td></tr></table></figure>
+<h3 id="步骤2：在-eslinitrc中增加配置"><a href="#步骤2：在-eslinitrc中增加配置" class="headerlink" title="步骤2：在.eslinitrc中增加配置"></a>步骤2：在.eslinitrc中增加配置</h3><figure class="highlight"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"extends"</span>:<span class="string">"standard"</span>,</span><br><span class="line">    <span class="attr">"plugins"</span>:[</span><br><span class="line">        <span class="string">"html"</span></span><br><span class="line">    ],</span><br><span class="line">    //增加的内容</span><br><span class="line">    "parser": "babel-eslint"</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="步骤3：在webpack-config-base-js中增加rules配置"><a href="#步骤3：在webpack-config-base-js中增加rules配置" class="headerlink" title="步骤3：在webpack.config.base.js中增加rules配置"></a>步骤3：在webpack.config.base.js中增加rules配置</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">rules: [</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//增加eslint预处理，如果有语法错误就报错，不进行其它loader的处理</span></span><br><span class="line">        test: <span class="regexp">/\.(vue|js|jsx)$/</span>,</span><br><span class="line">        loader: <span class="string">'eslint-loader'</span>,</span><br><span class="line">        exclude: <span class="regexp">/node_modules/</span>,</span><br><span class="line">        enforce: <span class="string">'pre'</span></span><br><span class="line">    &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<h2 id="统一IDE的配置"><a href="#统一IDE的配置" class="headerlink" title="统一IDE的配置"></a>统一IDE的配置</h2><h3 id="步骤1：安装EditorConfig-for-VS-Code插件"><a href="#步骤1：安装EditorConfig-for-VS-Code插件" class="headerlink" title="步骤1：安装EditorConfig for VS Code插件"></a>步骤1：安装EditorConfig for VS Code插件</h3><p>其它IDE也有对应的插件</p>
+<h3 id="步骤2：根目录增加-editorconfig-文件"><a href="#步骤2：根目录增加-editorconfig-文件" class="headerlink" title="步骤2：根目录增加(.editorconfig)文件"></a>步骤2：根目录增加(.editorconfig)文件</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">root = true                         此项目读取到这个目录就可以了，不用在向上搜索</span><br><span class="line"></span><br><span class="line">[*]</span><br><span class="line">charset = utf-8                     文件编码格式</span><br><span class="line">indent_style = space                缩进样式使用空格</span><br><span class="line">indent_size = 4                     缩进的大小为2个空格</span><br><span class="line">end_of_line = lf                    回车符使用lf</span><br><span class="line">insert_final_newline = true         保存时最后一行插入一行空行</span><br><span class="line">trim_trailing_whitespace = true     去掉行末的空格</span><br></pre></td></tr></table></figure>
+<h2 id="配置git提交之前必须检查通过"><a href="#配置git提交之前必须检查通过" class="headerlink" title="配置git提交之前必须检查通过"></a>配置git提交之前必须检查通过</h2><p>每次commit时，自动运行eslint检查，通过后才能提交，否则无法提交</p>
+<h3 id="步骤1：安装husky工具"><a href="#步骤1：安装husky工具" class="headerlink" title="步骤1：安装husky工具"></a>步骤1：安装husky工具</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">npm i husky -D</span><br></pre></td></tr></table></figure>
+<h3 id="步骤2：在package-json中增加配置"><a href="#步骤2：在package-json中增加配置" class="headerlink" title="步骤2：在package.json中增加配置"></a>步骤2：在package.json中增加配置</h3><figure class="highlight"><table><tr><td class="code"><pre><span class="line">"scripts": &#123;</span><br><span class="line">    "precommit": "npm run lint"</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+<p>现在运行git commit命令的时候就会先执行precommit命令</p>
+]]></content>
+      <categories>
+        <category>VUE</category>
+      </categories>
+      <tags>
+        <tag>vue</tag>
+        <tag>eslint</tag>
+        <tag>EditorConfig</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>渝中区生育保险咨询过程</title>
     <url>/2019-12-16-%E6%B8%9D%E4%B8%AD%E5%8C%BA%E7%94%9F%E8%82%B2%E4%BF%9D%E9%99%A9%E5%92%A8%E8%AF%A2%E8%BF%87%E7%A8%8B/</url>
-    <content><![CDATA[<h2 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h2><p>我老婆快生孩子了，我们不是重庆人，想会老家生，所以想咨询一下生育保险的报销流程，这个事情我觉得应该不复杂。</p>
+    <content><![CDATA[<h2 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h2><p>我老婆快生孩子了，我们不是重庆人，想回老家生，所以想咨询一下生育保险的报销流程，这个事情我觉得应该不复杂。</p>
 <h2 id="现场咨询"><a href="#现场咨询" class="headerlink" title="现场咨询"></a>现场咨询</h2><p>到现场后找到生育保险的窗口，说明来意，对面的大姐指着前面的牌子，漫不经心的说：“上面有办事流程”。我说：我们要在外地生也可以按这个流程走吧？她认真的点点头，于是我兴高采烈的拍了张照片，感觉事情很是顺利呀！</p>
 
 <h2 id="电话咨询"><a href="#电话咨询" class="headerlink" title="电话咨询"></a>电话咨询</h2><p>老婆和朋友闲聊得知，不在保险所在地生的要在社保局备案，要不然还得找关系才能报销，这是她本人的经历，很有说服力，那我就在咨询一下吧</p>
