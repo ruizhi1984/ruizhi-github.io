@@ -3,6 +3,27 @@
 
 
     <url>
+        <loc>https://www.ruizhi.work/tags/Docker/</loc>
+        <lastmod>2019-12-21T20:07:44.893Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://www.ruizhi.work/tags/Express/</loc>
+        <lastmod>2019-12-21T13:02:29.448Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://www.ruizhi.work/tags/Node/</loc>
+        <lastmod>2019-12-21T13:02:29.448Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
         <loc>https://www.ruizhi.work/tags/expressions/</loc>
         <lastmod>2019-12-18T14:38:54.446Z</lastmod>
         <changefreq>weekly</changefreq>

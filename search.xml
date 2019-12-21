@@ -1,6 +1,202 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>如何理解Docker,有什么作用和优势？</title>
+    <url>/2019-12-21-%E5%A6%82%E4%BD%95%E7%90%86%E8%A7%A3Docker-%E6%9C%89%E4%BB%80%E4%B9%88%E4%BD%9C%E7%94%A8%E5%92%8C%E4%BC%98%E5%8A%BF%EF%BC%9F/</url>
+    <content><![CDATA[<h2 id="Docker的官方解释"><a href="#Docker的官方解释" class="headerlink" title="Docker的官方解释"></a>Docker的官方解释</h2><blockquote>
+<p>Docker是一个开放源代码软件项目，让应用程序布署在软件容器下的工作可以自动化进行，借此在Linux操作系统上，提供一个额外的软件抽象层，以及操作系统层虚拟化的自动管理机制。</p>
+</blockquote>
+<blockquote>
+<p>Docker利用Linux核心中的资源分离机制，例如cgroups，以及Linux核心命名空间（name space），来建立独立的软件容器（containers）。这可以在单一Linux实体下运作，避免启动一个虚拟机器造成的额外负担。</p>
+</blockquote>
+<p>这个定义真是学院派的不能再学院派了，一般人通过这个充满专业名词的定义，能模糊地了解docker是种虚拟化工具，可以实现简化部署之类功能，但是并不能清楚地理解它到底牛逼在什么地方。</p>
+<h2 id="如何搞懂一个陌生的概念？"><a href="#如何搞懂一个陌生的概念？" class="headerlink" title="如何搞懂一个陌生的概念？"></a>如何搞懂一个陌生的概念？</h2><p>要搞明白docker的概念只看定义远远不够，还需要通过其他方式来认识它，一般来说有三种：</p>
+<ul>
+<li><p>第一种：在长期使用docker的过程中，逐渐体会到其优势（放到具体场景中认识）</p>
+</li>
+<li><p>第二种：通过和一些已经熟悉的概念对比来认识（比如虚拟机）上述两种方法都要求掌握相当多的软件虚拟化知识，但是对于一个从未接触过docker，甚至对部署都不是很了解，也没时间去研究docker的新人，应该怎么快速理解docker的核心优势呢？</p>
+</li>
+<li><p>第三种：借助于隐喻。如果你不清楚隐喻的概念，这里有一篇文章单独介绍：隐喻 。如果不想了解，可以将隐喻简单理解为类比：借助于另一个更容易认识的概念来映射新概念。</p>
+</li>
+</ul>
+<h2 id="docker的隐喻"><a href="#docker的隐喻" class="headerlink" title="docker的隐喻"></a>docker的隐喻</h2><p>「docker」字面意思是「码头工人」，这个名字应该是官方深思熟虑之后的结果，本身就带有很强的隐喻性质：借用了一个在真实世界中已经成熟的体系——全球物流系统，来映射docker在软件领域中起到的作用。在全球物流系统中，一个非常重要的发明就是集装箱。</p>
+<a id="more"></a>
+<h2 id="集装箱重要在哪里？"><a href="#集装箱重要在哪里？" class="headerlink" title="集装箱重要在哪里？"></a>集装箱重要在哪里？</h2><p>为了理解这件事情，可以先考察一下集装箱出现之前的物流情况：货物从工厂生产出来之后装箱，然后一箱箱的搬到卡车上，然后再一箱箱卸下来，一箱箱送上火车，运送到码头附近的火车站，再一箱箱卸下来，装上卡车，拉到货轮上，再一箱一箱的装上去…</p>
+<p>可以看出在整个流程中，大量的时间，人力 ，物力浪费在了中间的装卸上。在物流系统里，由于路程和运输工具速度的限制，货物真正在路上的时间是一定的，在交通技术得到改善之前，这个时间也很难去缩短，于是「货物装卸时间」就成了物流系统中的瓶颈。</p>
+<p><strong>这个瓶颈在集装箱出现之后得到了很大的改善。集装箱重要在它提供了一种通用的封装货物的标准规格（尺寸，外形符合统一标准），这样就产生了一些巨大的优点：</strong></p>
+<ol>
+<li><p>只需要在运输前一次性封装，集装箱就可以放上火车，卡车，拉到码头，直接放在货船上；卸船之后直接再放上火车，卡车，运送到目的地。</p>
+</li>
+<li><p>由于集装箱符合统一标准，整个流程非常容易机械化，这引发了以集装箱为中心的整个全球物流的标准化进程，进而节省了大量的资源，物流成本迅速下降，促进了全球资源的流动与重新配置。</p>
+</li>
+</ol>
+<h2 id="docker（码头工人）正是借用了集装箱的隐喻"><a href="#docker（码头工人）正是借用了集装箱的隐喻" class="headerlink" title="docker（码头工人）正是借用了集装箱的隐喻"></a>docker（码头工人）正是借用了集装箱的隐喻</h2><p>docker就像往集装箱里装货物的码头工人那样，它把应用打包成具有某种标准规格的集装箱，用计算机领域的语言来说，这种按照一定规格封装的集装箱叫「镜像」。其实就是将你原来的代码添加点额外的内容，格式之类的，生产出来的一个符合某种标准的东西。</p>
+<h2 id="集装箱减少了货物的运输工作量，那docker镜像又有什么相似的优势呢？"><a href="#集装箱减少了货物的运输工作量，那docker镜像又有什么相似的优势呢？" class="headerlink" title="集装箱减少了货物的运输工作量，那docker镜像又有什么相似的优势呢？"></a>集装箱减少了货物的运输工作量，那docker镜像又有什么相似的优势呢？</h2><h4 id="同样可以先看看docker出现之前的应用部署是情况。"><a href="#同样可以先看看docker出现之前的应用部署是情况。" class="headerlink" title="同样可以先看看docker出现之前的应用部署是情况。"></a>同样可以先看看docker出现之前的应用部署是情况。</h4><p><strong>比如说要部署一个django（一个流行的python web服务框架）应用，要做哪些事情？</strong></p>
+<ol>
+<li><p>首先得有个python环境，比如这个要部署的应用基于python3，而你机器上是python2，那ok，先装个python3吧，一看装起来还挺麻烦，要先装各种依赖，还要解决一些可能的冲突，没办法硬着头皮上吧。</p>
+</li>
+<li><p>装完python之后，发现还要装mysql，还用了redis。没办法，继续下载，安装，配置。费了九牛二虎之力终于搞完了，一天就这么过去了。</p>
+</li>
+<li><p>啥？你告诉我原来的服务器不用了，要换一台服务器？我靠，那重新来一遍吧。</p>
+</li>
+<li><p>啥？你说咱们的基础应用做的太好，要进行推广，需要指导其他厂商部署？我选择狗带</p>
+</li>
+</ol>
+<p>上面的描述可能有些夸张，但也不是非常罕见。在docker出现之前，各种安装、配置环境正是运维人员经常做的事情之一，而且在重复工作上浪费了巨大的资源。</p>
+<h4 id="docker出现之后"><a href="#docker出现之后" class="headerlink" title="docker出现之后"></a>docker出现之后</h4><ol>
+<li><p>标准的交付件前面提到docker最像集装箱的地方，就是它是软件交付领域的一种「标准化」，这种标准化的具体产物，简单来说就是「镜像（image）」。</p>
+</li>
+<li><p>「镜像」这个词说实话太玄乎，当然对应的原文「image」本身也挺玄乎的。原因是它根据一些场景引申了本来的含义。image本身是「画像，映像」的意思，又有「现实物体的抽象描绘」的意思，而且画像本身可以很容易的复制，后来又有了「原画像复制品」一类的意思。再后来直接就拿来表示光盘镜像（很容易复制的存储影像的东西，只不过画像是画在纸上，但这种影像以数字形式存在于光盘上）。当然「镜像」在汉语中就有「复制品」的含义，只不过加入了汉字独有的意境，显得玄乎，朦胧了。</p>
+</li>
+<li><p>在docker中镜像是指，把你的应用按照docker规定的格式封装成一种具有某种标准规格的东西（就像集装箱把你的货物封装起来类似）。形象的说，就是把你的应用按照一定的格式抽象的画了个画像。</p>
+</li>
+<li><p>在docker中镜像是无法直接运行的，我猜想这并不是技术上的原因，而是出于工程设计的考虑。因为一般来说，一个软件的某个具体版本只会打包成一个镜像， 如果镜像可以配置，运行的话，在使用过程中很可能会对镜像造成破坏。</p>
+</li>
+</ol>
+<p><strong>那怎么样避免镜像损坏的问题呢？</strong></p>
+<blockquote>
+<p>就是再加一层，相当于分身术，只要本尊没问题，分身怎么扑街都不会真正的跪掉。多加的这一层分身，就叫容器（container），这个名字也挺形象，它就像个盒子一样，你的应用在里面运行，而且多了一层安全机制。你想使用服务或把你的应用跑起来的话，只需要基于镜像新创建一个容器就可以了（一条命令搞定），而镜像还放在那里不动，没办法，金贵嘛。</p>
+</blockquote>
+<h4 id="Docker-究竟简化了什么东西？"><a href="#Docker-究竟简化了什么东西？" class="headerlink" title="Docker 究竟简化了什么东西？"></a>Docker 究竟简化了什么东西？</h4><p>docker在部署过程中，将安装，配置等重复的部分自动化完成。只需要在第一次部署时，构建完可用的docker镜像（装好集装箱），在以后使用中，短短的几行命令就可以直接拉取镜像，根据这个镜像创建出一个容器，把服务跑起来了。所需要的仅仅是安装了docker的服务器，一个Dockerfile文件（装箱清单），以及比较流畅的网络而已，真可谓『一次构建，到处部署』。</p>
+<p><strong>需要python3环境？</strong></p>
+<ul>
+<li>直接在Dockerfile（装箱清单）中加入： from python:3.x 搞定。</li>
+<li>需要迁移服务器？ 直接把Dockerfile，备份数据拷贝到新服务器，几条命令又搞定</li>
+<li>需要作为服务给别人使用？Dockerfile即是最清晰的部署文档，维护一个官方镜像即可，谁需要就直接拉下来几条命令部署上就行了。</li>
+</ul>
+<blockquote>
+<p>到这里你可能更能明白，docker不像传统的软件交付方式那样，只把代码以及说明文档之类的给你就完了，而是直接给你一个像集装箱那样的标准docker货件，这个标准件不仅包括了应用代码本身，还包括了代码运行需要的OS等整体依赖环境。于是，谁想用我的服务，直接拉取镜像，实例化一个容器就可以了，不再像之前那样有繁复的安装过程————这些都有人给你做过了。</p>
+</blockquote>
+<h2 id="当然docker的优点不止于此"><a href="#当然docker的优点不止于此" class="headerlink" title="当然docker的优点不止于此"></a>当然docker的优点不止于此</h2><p>基于一件核心事物的「标准化」有时候可以做更多的事情，就像集装箱带来的「标准化」不仅限于集装箱本身，同时还包括了运输器械，物流管理方法等在内的整个领域的标准化和效率的提高。比如自行车上的螺丝，轮胎等都有全球通用的标准，这些核心标准一经建立就对行业产生了深远的影响。</p>
+<p>docker也类似，一旦这种虚拟化封装标准建立起来之后，就可以基于标准件和相应的管理方式做更多的事情。随便举一些例子：</p>
+<ol>
+<li><p>统一的管理服务使用docker部署的应用，都会在docker的管理范围之内。这也是docker的另一个优点（第一个是标准化），它提供了一种隔离的空间，把服务器上零散的部署应用集中起来进行管理。比如未使用docker的时候，一个服务器上部署了n多服务，有mysql，redis，rabbitmq…。有一天服务器突然断电重启了，那些没有设置自动重启的应用，那些重启出问题的应用，那些你甚至都不知道隐藏在某个角落里的重要应用没启动成功….使用docker后，一眼就可以看出那些应用正常启动了，那些应用又出问题了，接下来只用有条不紊的处理就ok了。</p>
+</li>
+<li><p>持续交付上的应用持续交付有一些超出范围，自己去寻找答案吧</p>
+</li>
+<li><p>弹性计算也就是根据需要，动态地添加新的应用服务，在不需要时收回服务器资源，docker的标准化让这种弹性能力得到了更好的应用。</p>
+</li>
+</ol>
+<blockquote>
+<p>最后，关于docker的一个误解很多人说docker改变了运维世界，这句话是从群体角度来说的，是统计学意义上的改变，像mysql，python这样被大规模使用的基础应用，docker化之后为整个群体所节省的时间是非常巨大的。</p>
+</blockquote>
+<p>有人可能会问，我只有一台服务器，也不太可能会迁移。我的python服务，mysql服务，只需要部署一次，就可以在以后重复使用了。那这样docker对于我来说还有优势吗？毕竟docker也是有学习成本的。</p>
+<p>如果你确信你的应用都是一次性的，而且只提供给自己使用，那么docker在这种场景下的优势不是特别明显：即便是docker，最初的构建也是需要有人做的，这和直接在机器上部署一次的工作量差不多。也就是说，docker并不能把部署的工作「减少为0」，比较好的情况下是「基本减少为1」。</p>
+<p><strong>但是，你真的真的确信，你所做的工作只是一次性的吗？</strong></p>
+<blockquote>
+<p>本文摘抄知乎的一个回答，解释太好了，通俗易懂，怕链接失效摘抄下来，感谢！<br><a href="https://www.zhihu.com/question/22871084/answer/88293837" target="_blank" rel="noopener">https://www.zhihu.com/question/22871084/answer/88293837</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>Docker</category>
+      </categories>
+      <tags>
+        <tag>Docker</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Docker学习笔记</title>
+    <url>/2019-12-21-Docker%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h2 id="Docker有什么作用？"><a href="#Docker有什么作用？" class="headerlink" title="Docker有什么作用？"></a>Docker有什么作用？</h2><blockquote>
+<p>Docker提供了在松散隔离的环境（称为容器）中打包和运行应用程序的功能。隔离和安全性使您可以在给定主机上同时运行多个容器。容器是轻量级的，因为它们不需要虚拟机管理程序的额外负载，而是直接在主机的内核中运行。这意味着与使用虚拟机相比，可以在给定的硬件组合上运行更多的容器。</p>
+</blockquote>
+<p><a href="/2019-12-21-如何理解Docker-有什么作用和优势？/">看这篇文章可以更好的理解Docker的作用</a></p>
+<h2 id="Docker的组成"><a href="#Docker的组成" class="headerlink" title="Docker的组成"></a>Docker的组成</h2><ul>
+<li>Docker Client</li>
+<li>Docker Container</li>
+<li>Docker Registry</li>
+<li>Docker Image</li>
+</ul>
+<img src="/2019-12-21-Docker学习笔记/docker_part.png">
+<a id="more"></a>
+<h2 id="CentOS中Docker安装和启动"><a href="#CentOS中Docker安装和启动" class="headerlink" title="CentOS中Docker安装和启动"></a>CentOS中Docker安装和启动</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yum install docker</span><br></pre></td></tr></table></figure>
+<p>启动docker服务</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">systemctl start docker</span><br></pre></td></tr></table></figure>
+<p>查看docker版本号</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker -v</span><br></pre></td></tr></table></figure>
+<p> 设置开机自启动 Docker</p>
+ <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">systemctl enable docker</span><br></pre></td></tr></table></figure>
+<h2 id="获取镜像资源"><a href="#获取镜像资源" class="headerlink" title="获取镜像资源"></a>获取镜像资源</h2><p><a href="https://hub.docker.com/" target="_blank" rel="noopener">https://hub.docker.com/</a> 官方<br><a href="https://hub.daocloud.io/" target="_blank" rel="noopener">https://hub.daocloud.io/</a> 国内镜像</p>
+<h2 id="Docker常用命令"><a href="#Docker常用命令" class="headerlink" title="Docker常用命令"></a>Docker常用命令</h2><p>下载一个镜像</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 不指定版本安装最新版,从官方安装</span></span><br><span class="line">docker pull nginx:<span class="number">8.5</span><span class="number">.35</span></span><br><span class="line"><span class="comment">//从daocloud安装</span></span><br><span class="line">docker pull daocloud.io/library/nginx</span><br></pre></td></tr></table></figure>
+<p> 查看本地镜像</p>
+ <figure class="highlight js"><table><tr><td class="code"><pre><span class="line">docker images</span><br></pre></td></tr></table></figure>
+<p> 查看目前启动的Docker列表</p>
+ <figure class="highlight js"><table><tr><td class="code"><pre><span class="line">docker ps -a -l</span><br><span class="line"><span class="comment">//没参数返回正在运行的容器</span></span><br><span class="line"><span class="comment">//-a 表示查看所有容器</span></span><br><span class="line"><span class="comment">//-l 查看最新创建的容器</span></span><br></pre></td></tr></table></figure>
+<p>运行一个容器</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">docker run -i -t --name xxxx centos /bin/bash</span><br><span class="line"><span class="comment">//-i --interactive=ture|false 默认：false 交互式容器</span></span><br><span class="line"><span class="comment">//-t --tty=true|false 默认：false 开启后可以提供一个shell</span></span><br><span class="line"><span class="comment">//--name 给容器名字</span></span><br><span class="line"></span><br><span class="line">docker run -d --name xxxx</span><br><span class="line"><span class="comment">// -d 后台运行容器（守护式容器）适合运行web服务等需要长期运行的程序</span></span><br><span class="line"></span><br><span class="line">ctrl+pq 安全退出，如果用 ctrl+c退出 docker会停止</span><br></pre></td></tr></table></figure>
+<p>查看容器的详情</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker inspect id/容器名字</span><br></pre></td></tr></table></figure>
+<p> 删除已经停止的容器</p>
+ <figure class="highlight js"><table><tr><td class="code"><pre><span class="line">docker rm id/容器名字</span><br></pre></td></tr></table></figure>
+<p> 从新启动已经停止的容器</p>
+ <figure class="highlight js"><table><tr><td class="code"><pre><span class="line">docker start -i id/容器名字</span><br><span class="line"><span class="comment">// -i --interactive=ture|false 默认：false 交互式容器</span></span><br></pre></td></tr></table></figure>
+<p>进入一个守护式容器</p>
+ <figure class="highlight js"><table><tr><td class="code"><pre><span class="line">docker attach id/容器名字</span><br></pre></td></tr></table></figure>
+<p> 查看容器的log</p>
+ <figure class="highlight js"><table><tr><td class="code"><pre><span class="line">docker logs -f -t --tail id/容器名</span><br><span class="line"><span class="comment">// -f --follows=true|false 默认false 一直跟踪日志的变化</span></span><br><span class="line"><span class="comment">// -t --timestamps=true|false 默认false 日志结尾加上时间戳</span></span><br><span class="line"><span class="comment">// --tail "all" 指定显示最新的几条日志不指定显示所有</span></span><br></pre></td></tr></table></figure>
+<p>查看容器的进程</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">docker top id/容器名</span><br></pre></td></tr></table></figure>
+<p>在运行中的容器内启动新进程</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">docker exec -d -i -t id/容器名</span><br><span class="line"></span><br><span class="line"><span class="comment">//进入容器的bash界面</span></span><br><span class="line">docker exec -it 容器名 bash</span><br></pre></td></tr></table></figure>
+<p>停止运行中的容器</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//发送停止信号等待容器停止后会返回容器的名字</span></span><br><span class="line">docker stop id/容器名</span><br><span class="line"><span class="comment">//暴力停止</span></span><br><span class="line">docker kell id/容器名</span><br></pre></td></tr></table></figure>
+<h2 id="运行容器时指定端口映射"><a href="#运行容器时指定端口映射" class="headerlink" title="运行容器时指定端口映射"></a>运行容器时指定端口映射</h2><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">docker run [-P] [-p] -i -t centos /bin/bash</span><br><span class="line"><span class="comment">// -P --publish-all=true|false 默认为false  大写P是为容器暴露的所有端口进行映射</span></span><br><span class="line"><span class="comment">// -p --publish=[] 指定映射容器的哪些端口有四种写法：</span></span><br><span class="line"><span class="comment">// 1. 只指定容器的端口，宿主机的端口随机映射</span></span><br><span class="line">docker run -p <span class="number">80</span> -i -t centos /bin/bash </span><br><span class="line"><span class="comment">// 2. 指定宿主机的端口映射到容器的哪个端口</span></span><br><span class="line">docker run -p <span class="number">8080</span>:<span class="number">80</span> -i -t centos /bin/bash </span><br><span class="line"><span class="comment">// 3. 指定ip和端口</span></span><br><span class="line">docker run -p <span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span>:<span class="number">80</span> -i -t centos /bin/bash </span><br><span class="line"><span class="comment">// 4. 指定ip端口和容器端口</span></span><br><span class="line">docker run -p <span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span>:<span class="number">8080</span>:<span class="number">80</span> -i -t centos /bin/bash</span><br></pre></td></tr></table></figure>
+<h2 id="在容器中部署Nginx服务"><a href="#在容器中部署Nginx服务" class="headerlink" title="在容器中部署Nginx服务"></a>在容器中部署Nginx服务</h2><ol>
+<li>查看本地镜像是否有nginx，如果没有下载之</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//查看本地镜像</span></span><br><span class="line">docker images </span><br><span class="line"><span class="comment">//下载nginx,如果有跳过此步</span></span><br><span class="line">docker pull nginx</span><br><span class="line"><span class="comment">//如果太慢可以用国内镜像</span></span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>后台方式启动一个运行Nginx的Docker,并命名为taobao，将宿主机的8080映射到docker的80端口</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">docker run -d -p <span class="number">8080</span>:<span class="number">80</span> --name taobao docker.io/nginx </span><br><span class="line"><span class="comment">//运行后报错了</span></span><br><span class="line"><span class="comment">// oci runtime error: container_linux.go:235: starting container process caused "process_linux.go:258: applying cgroup configuration for process caused \"Cannot set property TasksAccounting, or unknown property.\"".</span></span><br><span class="line"><span class="comment">//网上找了半天说是linux版本问题，执行yum update更新就好了</span></span><br><span class="line"><span class="comment">// 升级前</span></span><br><span class="line">cat /etc/redhat-release </span><br><span class="line">CentOS Linux release <span class="number">7.2</span><span class="number">.1511</span> (Core) </span><br><span class="line"><span class="comment">// 升级后</span></span><br><span class="line">cat /etc/redhat-release </span><br><span class="line">CentOS Linux release <span class="number">7.7</span><span class="number">.1908</span> (Core)</span><br><span class="line"><span class="comment">//查看端口是否开启</span></span><br><span class="line">netstat -anp | grep <span class="number">8080</span></span><br></pre></td></tr></table></figure>
+<p><strong>果然更新后问题解决了</strong></p>
+<ol start="3">
+<li>在浏览器访问宿主机8080端口,显示nginx主页，说明Nginx启动成功</li>
+</ol>
+<h2 id="如何将网站放到Docker中的Nginx？"><a href="#如何将网站放到Docker中的Nginx？" class="headerlink" title="如何将网站放到Docker中的Nginx？"></a>如何将网站放到Docker中的Nginx？</h2><ol>
+<li>拷贝宿主机的文件到Docker中Nignx的html目录，这种方式比较麻烦</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker cp xxx.html 容器名://usr/share/nginx/html</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>把宿主机的目录映射到Docker中/usr/share/nginx/html目录</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//后台运行nginx镜像的Docker</span></span><br><span class="line"><span class="comment">//把宿主机8008端口映射到Docker的80端口</span></span><br><span class="line"><span class="comment">//将宿主机的root/app/webapp1目录映射到Docker中的usr/share/nginx/html</span></span><br><span class="line">docker run -d --name webapp1 -p <span class="number">8080</span>:<span class="number">80</span> -v /root/app/webapp1:usr/share/nginx/html docker.io/nginx</span><br><span class="line"><span class="string">``</span><span class="string">` </span></span><br><span class="line"><span class="string">这样以后上传代码直接上传到/root/app/webapp1目录就可以了。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">如果需要部署第二个应用</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">`</span><span class="string">``</span>js</span><br><span class="line"><span class="comment">//将网站代码上传到/root/app/webapp2目录</span></span><br><span class="line"><span class="comment">//运行下面的命令就可以了，非常方便</span></span><br><span class="line">docker run -d --name webapp2 -p <span class="number">8081</span>:<span class="number">80</span> -v /root/app/webapp2:usr/share/nginx/html docker.io/nginx</span><br></pre></td></tr></table></figure>
+<h2 id="如何通过宿主机的80端口访问-webapp1-和-webapp2-两个网站呢"><a href="#如何通过宿主机的80端口访问-webapp1-和-webapp2-两个网站呢" class="headerlink" title="如何通过宿主机的80端口访问 webapp1 和 webapp2 两个网站呢"></a>如何通过宿主机的80端口访问 webapp1 和 webapp2 两个网站呢</h2><p>在宿主机启动Nginx服务，不做应用部署，专门做反向代理</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">具体设置后期补充</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Docker</category>
+      </categories>
+      <tags>
+        <tag>Docker</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Node+express搭建api服务</title>
+    <url>/2019-12-21-Node-express%E6%90%AD%E5%BB%BAapi%E6%9C%8D%E5%8A%A1/</url>
+    <content><![CDATA[<h2 id="初始化项目"><a href="#初始化项目" class="headerlink" title="初始化项目"></a>初始化项目</h2><p>项目更目录下初始化package.json</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//根据提示完成初始化</span></span><br><span class="line">npm init</span><br></pre></td></tr></table></figure>
+<p>安装Express</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">npm i express</span><br></pre></td></tr></table></figure>
+<p>编辑入口文件server.js(名字可以自己定义)</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//引入express</span></span><br><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">"express"</span>)</span><br><span class="line"><span class="comment">//实例化express</span></span><br><span class="line"><span class="keyword">const</span> app = express()</span><br><span class="line"><span class="comment">//定义端口</span></span><br><span class="line"><span class="keyword">const</span> port = process.env.PORT || <span class="number">5000</span>;</span><br><span class="line"><span class="comment">//定义根目录路由</span></span><br><span class="line">app.get(<span class="string">"/"</span>, (req, res) =&gt; &#123;</span><br><span class="line">    res.send(<span class="string">"Hello World!"</span>)</span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">//监听端口</span></span><br><span class="line">app.listen(port, () =&gt; &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">`Server running on port <span class="subst">$&#123;port&#125;</span>`</span>)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>运行服务</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">node server.js</span><br></pre></td></tr></table></figure>
+<p>如果成功运行，终端会显示“Server running on  <a href="http://localhost:5000”" target="_blank" rel="noopener">http://localhost:5000”</a></p>
+<p>现在再浏览器访问<a href="http://localhost:5000就可以看到“Hello" target="_blank" rel="noopener">http://localhost:5000就可以看到“Hello</a> World！”了，但现在如果修改代码，需要手动结束服务，从新运行一次命令。</p>
+<h2 id="全局安装nodemon，实现自动重启服务"><a href="#全局安装nodemon，实现自动重启服务" class="headerlink" title="全局安装nodemon，实现自动重启服务"></a>全局安装nodemon，实现自动重启服务</h2><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">npm i nodemon -g</span><br><span class="line"><span class="comment">//用nodemon 运行程序</span></span><br><span class="line">nodemon server.js</span><br></pre></td></tr></table></figure>
+<p>现在修改代码并保存后，就会自动重启服务了</p>
+<h2 id="链接Mogodb"><a href="#链接Mogodb" class="headerlink" title="链接Mogodb"></a>链接Mogodb</h2>]]></content>
+      <categories>
+        <category>Node</category>
+      </categories>
+      <tags>
+        <tag>Node</tag>
+        <tag>Express</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>MapboxGl Expressions学习笔记</title>
     <url>/2019-12-18-MapboxGl-Expressions%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<h2 id="什么是MapboxGl-Expressions？"><a href="#什么是MapboxGl-Expressions？" class="headerlink" title="什么是MapboxGl Expressions？"></a>什么是MapboxGl Expressions？</h2><p>MapboxGl Expressions是Mapbox GL的JS表达式，任何layout、paint或者filter的值都可以用一个expression表达式来控制不同属性或状态的feature的样式。也就是用于在视觉上区分同一层内的要素类型或创建数据可视化</p>

@@ -1,0 +1,1452 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4/css/font-awesome.min.css">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.1.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="Docker的官方解释 Docker是一个开放源代码软件项目，让应用程序布署在软件容器下的工作可以自动化进行，借此在Linux操作系统上，提供一个额外的软件抽象层，以及操作系统层虚拟化的自动管理机制。   Docker利用Linux核心中的资源分离机制，例如cgroups，以及Linux核心命名空间（name space），来建立独立的软件容器（containers）。这可以在单一Linux实体下">
+<meta name="keywords" content="Docker">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何理解Docker,有什么作用和优势？">
+<meta property="og:url" content="https://www.ruizhi.work/2019-12-21-如何理解Docker-有什么作用和优势？/index.html">
+<meta property="og:site_name" content="BugWang的博客">
+<meta property="og:description" content="Docker的官方解释 Docker是一个开放源代码软件项目，让应用程序布署在软件容器下的工作可以自动化进行，借此在Linux操作系统上，提供一个额外的软件抽象层，以及操作系统层虚拟化的自动管理机制。   Docker利用Linux核心中的资源分离机制，例如cgroups，以及Linux核心命名空间（name space），来建立独立的软件容器（containers）。这可以在单一Linux实体下">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-12-21T15:59:20.174Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何理解Docker,有什么作用和优势？">
+<meta name="twitter:description" content="Docker的官方解释 Docker是一个开放源代码软件项目，让应用程序布署在软件容器下的工作可以自动化进行，借此在Linux操作系统上，提供一个额外的软件抽象层，以及操作系统层虚拟化的自动管理机制。   Docker利用Linux核心中的资源分离机制，例如cgroups，以及Linux核心命名空间（name space），来建立独立的软件容器（containers）。这可以在单一Linux实体下">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="https://www.ruizhi.work/2019-12-21-如何理解Docker-有什么作用和优势？/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>如何理解Docker,有什么作用和优势？ | BugWang的博客</title>
+  
+
+
+
+
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?828010f37a157cc5c77a7b6c62a16af0";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">BugWang的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">WEB前端工作记录</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签<span class="badge">27</span></a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类<span class="badge">11</span></a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">15</span></a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-commonweal">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/404.html" rel="section"><i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>公益 404</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.ruizhi.work/2019-12-21-如何理解Docker-有什么作用和优势？/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BugWang">
+      <meta itemprop="description" content="努力工作，快乐生活！">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BugWang的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">如何理解Docker,有什么作用和优势？
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-12-21 23:14:00 / 修改时间：23:59:20" itemprop="dateCreated datePublished" datetime="2019-12-21T23:14:00+08:00">2019-12-21</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Docker/" itemprop="url" rel="index"><span itemprop="name">Docker</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
+                <a href="/2019-12-21-如何理解Docker-有什么作用和优势？/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019-12-21-如何理解Docker-有什么作用和优势？/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="Docker的官方解释"><a href="#Docker的官方解释" class="headerlink" title="Docker的官方解释"></a>Docker的官方解释</h2><blockquote>
+<p>Docker是一个开放源代码软件项目，让应用程序布署在软件容器下的工作可以自动化进行，借此在Linux操作系统上，提供一个额外的软件抽象层，以及操作系统层虚拟化的自动管理机制。</p>
+</blockquote>
+<blockquote>
+<p>Docker利用Linux核心中的资源分离机制，例如cgroups，以及Linux核心命名空间（name space），来建立独立的软件容器（containers）。这可以在单一Linux实体下运作，避免启动一个虚拟机器造成的额外负担。</p>
+</blockquote>
+<p>这个定义真是学院派的不能再学院派了，一般人通过这个充满专业名词的定义，能模糊地了解docker是种虚拟化工具，可以实现简化部署之类功能，但是并不能清楚地理解它到底牛逼在什么地方。</p>
+<h2 id="如何搞懂一个陌生的概念？"><a href="#如何搞懂一个陌生的概念？" class="headerlink" title="如何搞懂一个陌生的概念？"></a>如何搞懂一个陌生的概念？</h2><p>要搞明白docker的概念只看定义远远不够，还需要通过其他方式来认识它，一般来说有三种：</p>
+<ul>
+<li><p>第一种：在长期使用docker的过程中，逐渐体会到其优势（放到具体场景中认识）</p>
+</li>
+<li><p>第二种：通过和一些已经熟悉的概念对比来认识（比如虚拟机）上述两种方法都要求掌握相当多的软件虚拟化知识，但是对于一个从未接触过docker，甚至对部署都不是很了解，也没时间去研究docker的新人，应该怎么快速理解docker的核心优势呢？</p>
+</li>
+<li><p>第三种：借助于隐喻。如果你不清楚隐喻的概念，这里有一篇文章单独介绍：隐喻 。如果不想了解，可以将隐喻简单理解为类比：借助于另一个更容易认识的概念来映射新概念。</p>
+</li>
+</ul>
+<h2 id="docker的隐喻"><a href="#docker的隐喻" class="headerlink" title="docker的隐喻"></a>docker的隐喻</h2><p>「docker」字面意思是「码头工人」，这个名字应该是官方深思熟虑之后的结果，本身就带有很强的隐喻性质：借用了一个在真实世界中已经成熟的体系——全球物流系统，来映射docker在软件领域中起到的作用。在全球物流系统中，一个非常重要的发明就是集装箱。</p>
+<a id="more"></a>
+<h2 id="集装箱重要在哪里？"><a href="#集装箱重要在哪里？" class="headerlink" title="集装箱重要在哪里？"></a>集装箱重要在哪里？</h2><p>为了理解这件事情，可以先考察一下集装箱出现之前的物流情况：货物从工厂生产出来之后装箱，然后一箱箱的搬到卡车上，然后再一箱箱卸下来，一箱箱送上火车，运送到码头附近的火车站，再一箱箱卸下来，装上卡车，拉到货轮上，再一箱一箱的装上去…</p>
+<p>可以看出在整个流程中，大量的时间，人力 ，物力浪费在了中间的装卸上。在物流系统里，由于路程和运输工具速度的限制，货物真正在路上的时间是一定的，在交通技术得到改善之前，这个时间也很难去缩短，于是「货物装卸时间」就成了物流系统中的瓶颈。</p>
+<p><strong>这个瓶颈在集装箱出现之后得到了很大的改善。集装箱重要在它提供了一种通用的封装货物的标准规格（尺寸，外形符合统一标准），这样就产生了一些巨大的优点：</strong></p>
+<ol>
+<li><p>只需要在运输前一次性封装，集装箱就可以放上火车，卡车，拉到码头，直接放在货船上；卸船之后直接再放上火车，卡车，运送到目的地。</p>
+</li>
+<li><p>由于集装箱符合统一标准，整个流程非常容易机械化，这引发了以集装箱为中心的整个全球物流的标准化进程，进而节省了大量的资源，物流成本迅速下降，促进了全球资源的流动与重新配置。</p>
+</li>
+</ol>
+<h2 id="docker（码头工人）正是借用了集装箱的隐喻"><a href="#docker（码头工人）正是借用了集装箱的隐喻" class="headerlink" title="docker（码头工人）正是借用了集装箱的隐喻"></a>docker（码头工人）正是借用了集装箱的隐喻</h2><p>docker就像往集装箱里装货物的码头工人那样，它把应用打包成具有某种标准规格的集装箱，用计算机领域的语言来说，这种按照一定规格封装的集装箱叫「镜像」。其实就是将你原来的代码添加点额外的内容，格式之类的，生产出来的一个符合某种标准的东西。</p>
+<h2 id="集装箱减少了货物的运输工作量，那docker镜像又有什么相似的优势呢？"><a href="#集装箱减少了货物的运输工作量，那docker镜像又有什么相似的优势呢？" class="headerlink" title="集装箱减少了货物的运输工作量，那docker镜像又有什么相似的优势呢？"></a>集装箱减少了货物的运输工作量，那docker镜像又有什么相似的优势呢？</h2><h4 id="同样可以先看看docker出现之前的应用部署是情况。"><a href="#同样可以先看看docker出现之前的应用部署是情况。" class="headerlink" title="同样可以先看看docker出现之前的应用部署是情况。"></a>同样可以先看看docker出现之前的应用部署是情况。</h4><p><strong>比如说要部署一个django（一个流行的python web服务框架）应用，要做哪些事情？</strong></p>
+<ol>
+<li><p>首先得有个python环境，比如这个要部署的应用基于python3，而你机器上是python2，那ok，先装个python3吧，一看装起来还挺麻烦，要先装各种依赖，还要解决一些可能的冲突，没办法硬着头皮上吧。</p>
+</li>
+<li><p>装完python之后，发现还要装mysql，还用了redis。没办法，继续下载，安装，配置。费了九牛二虎之力终于搞完了，一天就这么过去了。</p>
+</li>
+<li><p>啥？你告诉我原来的服务器不用了，要换一台服务器？我靠，那重新来一遍吧。</p>
+</li>
+<li><p>啥？你说咱们的基础应用做的太好，要进行推广，需要指导其他厂商部署？我选择狗带</p>
+</li>
+</ol>
+<p>上面的描述可能有些夸张，但也不是非常罕见。在docker出现之前，各种安装、配置环境正是运维人员经常做的事情之一，而且在重复工作上浪费了巨大的资源。</p>
+<h4 id="docker出现之后"><a href="#docker出现之后" class="headerlink" title="docker出现之后"></a>docker出现之后</h4><ol>
+<li><p>标准的交付件前面提到docker最像集装箱的地方，就是它是软件交付领域的一种「标准化」，这种标准化的具体产物，简单来说就是「镜像（image）」。</p>
+</li>
+<li><p>「镜像」这个词说实话太玄乎，当然对应的原文「image」本身也挺玄乎的。原因是它根据一些场景引申了本来的含义。image本身是「画像，映像」的意思，又有「现实物体的抽象描绘」的意思，而且画像本身可以很容易的复制，后来又有了「原画像复制品」一类的意思。再后来直接就拿来表示光盘镜像（很容易复制的存储影像的东西，只不过画像是画在纸上，但这种影像以数字形式存在于光盘上）。当然「镜像」在汉语中就有「复制品」的含义，只不过加入了汉字独有的意境，显得玄乎，朦胧了。</p>
+</li>
+<li><p>在docker中镜像是指，把你的应用按照docker规定的格式封装成一种具有某种标准规格的东西（就像集装箱把你的货物封装起来类似）。形象的说，就是把你的应用按照一定的格式抽象的画了个画像。</p>
+</li>
+<li><p>在docker中镜像是无法直接运行的，我猜想这并不是技术上的原因，而是出于工程设计的考虑。因为一般来说，一个软件的某个具体版本只会打包成一个镜像， 如果镜像可以配置，运行的话，在使用过程中很可能会对镜像造成破坏。</p>
+</li>
+</ol>
+<p><strong>那怎么样避免镜像损坏的问题呢？</strong></p>
+<blockquote>
+<p>就是再加一层，相当于分身术，只要本尊没问题，分身怎么扑街都不会真正的跪掉。多加的这一层分身，就叫容器（container），这个名字也挺形象，它就像个盒子一样，你的应用在里面运行，而且多了一层安全机制。你想使用服务或把你的应用跑起来的话，只需要基于镜像新创建一个容器就可以了（一条命令搞定），而镜像还放在那里不动，没办法，金贵嘛。</p>
+</blockquote>
+<h4 id="Docker-究竟简化了什么东西？"><a href="#Docker-究竟简化了什么东西？" class="headerlink" title="Docker 究竟简化了什么东西？"></a>Docker 究竟简化了什么东西？</h4><p>docker在部署过程中，将安装，配置等重复的部分自动化完成。只需要在第一次部署时，构建完可用的docker镜像（装好集装箱），在以后使用中，短短的几行命令就可以直接拉取镜像，根据这个镜像创建出一个容器，把服务跑起来了。所需要的仅仅是安装了docker的服务器，一个Dockerfile文件（装箱清单），以及比较流畅的网络而已，真可谓『一次构建，到处部署』。</p>
+<p><strong>需要python3环境？</strong></p>
+<ul>
+<li>直接在Dockerfile（装箱清单）中加入： from python:3.x 搞定。</li>
+<li>需要迁移服务器？ 直接把Dockerfile，备份数据拷贝到新服务器，几条命令又搞定</li>
+<li>需要作为服务给别人使用？Dockerfile即是最清晰的部署文档，维护一个官方镜像即可，谁需要就直接拉下来几条命令部署上就行了。</li>
+</ul>
+<blockquote>
+<p>到这里你可能更能明白，docker不像传统的软件交付方式那样，只把代码以及说明文档之类的给你就完了，而是直接给你一个像集装箱那样的标准docker货件，这个标准件不仅包括了应用代码本身，还包括了代码运行需要的OS等整体依赖环境。于是，谁想用我的服务，直接拉取镜像，实例化一个容器就可以了，不再像之前那样有繁复的安装过程————这些都有人给你做过了。</p>
+</blockquote>
+<h2 id="当然docker的优点不止于此"><a href="#当然docker的优点不止于此" class="headerlink" title="当然docker的优点不止于此"></a>当然docker的优点不止于此</h2><p>基于一件核心事物的「标准化」有时候可以做更多的事情，就像集装箱带来的「标准化」不仅限于集装箱本身，同时还包括了运输器械，物流管理方法等在内的整个领域的标准化和效率的提高。比如自行车上的螺丝，轮胎等都有全球通用的标准，这些核心标准一经建立就对行业产生了深远的影响。</p>
+<p>docker也类似，一旦这种虚拟化封装标准建立起来之后，就可以基于标准件和相应的管理方式做更多的事情。随便举一些例子：</p>
+<ol>
+<li><p>统一的管理服务使用docker部署的应用，都会在docker的管理范围之内。这也是docker的另一个优点（第一个是标准化），它提供了一种隔离的空间，把服务器上零散的部署应用集中起来进行管理。比如未使用docker的时候，一个服务器上部署了n多服务，有mysql，redis，rabbitmq…。有一天服务器突然断电重启了，那些没有设置自动重启的应用，那些重启出问题的应用，那些你甚至都不知道隐藏在某个角落里的重要应用没启动成功….使用docker后，一眼就可以看出那些应用正常启动了，那些应用又出问题了，接下来只用有条不紊的处理就ok了。</p>
+</li>
+<li><p>持续交付上的应用持续交付有一些超出范围，自己去寻找答案吧</p>
+</li>
+<li><p>弹性计算也就是根据需要，动态地添加新的应用服务，在不需要时收回服务器资源，docker的标准化让这种弹性能力得到了更好的应用。</p>
+</li>
+</ol>
+<blockquote>
+<p>最后，关于docker的一个误解很多人说docker改变了运维世界，这句话是从群体角度来说的，是统计学意义上的改变，像mysql，python这样被大规模使用的基础应用，docker化之后为整个群体所节省的时间是非常巨大的。</p>
+</blockquote>
+<p>有人可能会问，我只有一台服务器，也不太可能会迁移。我的python服务，mysql服务，只需要部署一次，就可以在以后重复使用了。那这样docker对于我来说还有优势吗？毕竟docker也是有学习成本的。</p>
+<p>如果你确信你的应用都是一次性的，而且只提供给自己使用，那么docker在这种场景下的优势不是特别明显：即便是docker，最初的构建也是需要有人做的，这和直接在机器上部署一次的工作量差不多。也就是说，docker并不能把部署的工作「减少为0」，比较好的情况下是「基本减少为1」。</p>
+<p><strong>但是，你真的真的确信，你所做的工作只是一次性的吗？</strong></p>
+<blockquote>
+<p>本文摘抄知乎的一个回答，解释太好了，通俗易懂，怕链接失效摘抄下来，感谢！<br><a href="https://www.zhihu.com/question/22871084/answer/88293837" target="_blank" rel="noopener">https://www.zhihu.com/question/22871084/answer/88293837</a></p>
+</blockquote>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div id="reward-container">
+  <div>您的支持将鼓励我继续创作！</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/wechatpay.jpg" alt="BugWang 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.jpg" alt="BugWang 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Docker/" rel="tag"># Docker</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019-12-21-Docker学习笔记/" rel="next" title="Docker学习笔记">
+                <i class="fa fa-chevron-left"></i> Docker学习笔记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">BugWang</p>
+              <div class="site-description motion-element" itemprop="description">努力工作，快乐生活！</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">15</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">11</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">27</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/ruizhi1984" title="GitHub &rarr; https://github.com/ruizhi1984" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Docker的官方解释"><span class="nav-number">1.</span> <span class="nav-text">Docker的官方解释</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何搞懂一个陌生的概念？"><span class="nav-number">2.</span> <span class="nav-text">如何搞懂一个陌生的概念？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#docker的隐喻"><span class="nav-number">3.</span> <span class="nav-text">docker的隐喻</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#集装箱重要在哪里？"><span class="nav-number">4.</span> <span class="nav-text">集装箱重要在哪里？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#docker（码头工人）正是借用了集装箱的隐喻"><span class="nav-number">5.</span> <span class="nav-text">docker（码头工人）正是借用了集装箱的隐喻</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#集装箱减少了货物的运输工作量，那docker镜像又有什么相似的优势呢？"><span class="nav-number">6.</span> <span class="nav-text">集装箱减少了货物的运输工作量，那docker镜像又有什么相似的优势呢？</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#同样可以先看看docker出现之前的应用部署是情况。"><span class="nav-number">6.0.1.</span> <span class="nav-text">同样可以先看看docker出现之前的应用部署是情况。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#docker出现之后"><span class="nav-number">6.0.2.</span> <span class="nav-text">docker出现之后</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Docker-究竟简化了什么东西？"><span class="nav-number">6.0.3.</span> <span class="nav-text">Docker 究竟简化了什么东西？</span></a></li></ol></li></ol><li class="nav-item nav-level-2"><a class="nav-link" href="#当然docker的优点不止于此"><span class="nav-number">7.</span> <span class="nav-text">当然docker的优点不止于此</span></a></li></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">BugWang</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.1.1</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.1"></script>
+
+  <script src="/js/motion.js?v=7.1.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.1.1"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.1.1"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.1"></script>
+<script src="/js/post-details.js?v=7.1.1"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+  
+
+<script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
+
+
+
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: 'KgOtulOCax9jH1T5tcY9D8A9-gzGzoHsz',
+    appKey: 'b5c08XMXCbO0Qc9JvFmj79LG',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn'
+  });
+</script>
+
+
+
+
+  
+
+
+  
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
