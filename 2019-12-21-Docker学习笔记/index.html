@@ -107,7 +107,7 @@
 <meta property="og:description" content="Docker有什么作用？ Docker提供了在松散隔离的环境（称为容器）中打包和运行应用程序的功能。隔离和安全性使您可以在给定主机上同时运行多个容器。容器是轻量级的，因为它们不需要虚拟机管理程序的额外负载，而是直接在主机的内核中运行。这意味着与使用虚拟机相比，可以在给定的硬件组合上运行更多的容器。  看这篇文章可以更好的理解Docker的作用 Docker的组成 Docker Client Doc">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://www.ruizhi.work/2019-12-21-Docker学习笔记/docker_part.png">
-<meta property="og:updated_time" content="2019-12-21T20:07:44.893Z">
+<meta property="og:updated_time" content="2019-12-23T10:50:08.857Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Docker学习笔记">
 <meta name="twitter:description" content="Docker有什么作用？ Docker提供了在松散隔离的环境（称为容器）中打包和运行应用程序的功能。隔离和安全性使您可以在给定主机上同时运行多个容器。容器是轻量级的，因为它们不需要虚拟机管理程序的额外负载，而是直接在主机的内核中运行。这意味着与使用虚拟机相比，可以在给定的硬件组合上运行更多的容器。  看这篇文章可以更好的理解Docker的作用 Docker的组成 Docker Client Doc">
@@ -260,7 +260,7 @@
       
     
 
-    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签<span class="badge">27</span></a>
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签<span class="badge">36</span></a>
 
   </li>
         
@@ -279,7 +279,7 @@
       
     
 
-    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类<span class="badge">11</span></a>
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类<span class="badge">13</span></a>
 
   </li>
         
@@ -298,7 +298,7 @@
       
     
 
-    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">15</span></a>
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">22</span></a>
 
   </li>
         
@@ -458,7 +458,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-12-22 04:07:44" itemprop="dateModified" datetime="2019-12-22T04:07:44+08:00">2019-12-22</time>
+                <time title="修改时间：2019-12-23 18:50:08" itemprop="dateModified" datetime="2019-12-23T18:50:08+08:00">2019-12-23</time>
               
             
           </span>
@@ -551,10 +551,12 @@
  <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">docker ps -a -l</span><br><span class="line"><span class="comment">//没参数返回正在运行的容器</span></span><br><span class="line"><span class="comment">//-a 表示查看所有容器</span></span><br><span class="line"><span class="comment">//-l 查看最新创建的容器</span></span><br></pre></td></tr></table></figure>
 <p>运行一个容器</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">docker run -i -t --name xxxx centos /bin/bash</span><br><span class="line"><span class="comment">//-i --interactive=ture|false 默认：false 交互式容器</span></span><br><span class="line"><span class="comment">//-t --tty=true|false 默认：false 开启后可以提供一个shell</span></span><br><span class="line"><span class="comment">//--name 给容器名字</span></span><br><span class="line"></span><br><span class="line">docker run -d --name xxxx</span><br><span class="line"><span class="comment">// -d 后台运行容器（守护式容器）适合运行web服务等需要长期运行的程序</span></span><br><span class="line"></span><br><span class="line">ctrl+pq 安全退出，如果用 ctrl+c退出 docker会停止</span><br></pre></td></tr></table></figure>
-<p>查看容器的详情</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker inspect id/容器名字</span><br></pre></td></tr></table></figure>
+<p>查看容器/镜像的详情</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker inspect id/容器名字/镜像名（repository:tag)</span><br></pre></td></tr></table></figure>
 <p> 删除已经停止的容器</p>
  <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker rm id/容器名字</span><br></pre></td></tr></table></figure>
+<p> 删除镜像</p>
+ <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker rmi 镜像名</span><br></pre></td></tr></table></figure>
 <p> 从新启动已经停止的容器</p>
  <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker start -i id/容器名字</span><br><span class="line"><span class="comment">// -i --interactive=ture|false 默认：false 交互式容器</span></span><br></pre></td></tr></table></figure>
 <p>进入一个守护式容器</p>
@@ -589,7 +591,26 @@
 </ol>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//后台运行nginx镜像的Docker</span></span><br><span class="line"><span class="comment">//把宿主机8008端口映射到Docker的80端口</span></span><br><span class="line"><span class="comment">//将宿主机的root/app/webapp1目录映射到Docker中的usr/share/nginx/html</span></span><br><span class="line">docker run -d --name webapp1 -p <span class="number">8080</span>:<span class="number">80</span> -v /root/app/webapp1:usr/share/nginx/html docker.io/nginx</span><br><span class="line"><span class="string">``</span><span class="string">` </span></span><br><span class="line"><span class="string">这样以后上传代码直接上传到/root/app/webapp1目录就可以了。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">如果需要部署第二个应用</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">`</span><span class="string">``</span>js</span><br><span class="line"><span class="comment">//将网站代码上传到/root/app/webapp2目录</span></span><br><span class="line"><span class="comment">//运行下面的命令就可以了，非常方便</span></span><br><span class="line">docker run -d --name webapp2 -p <span class="number">8081</span>:<span class="number">80</span> -v /root/app/webapp2:usr/share/nginx/html docker.io/nginx</span><br></pre></td></tr></table></figure>
 <h2 id="如何通过宿主机的80端口访问-webapp1-和-webapp2-两个网站呢"><a href="#如何通过宿主机的80端口访问-webapp1-和-webapp2-两个网站呢" class="headerlink" title="如何通过宿主机的80端口访问 webapp1 和 webapp2 两个网站呢"></a>如何通过宿主机的80端口访问 webapp1 和 webapp2 两个网站呢</h2><p>在宿主机启动Nginx服务，不做应用部署，专门做反向代理</p>
+<p>nginx-proxy这个库专门做docker自动反向代理的，以后研究</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">具体设置后期补充</span><br></pre></td></tr></table></figure>
+<h2 id="查找一个镜像"><a href="#查找一个镜像" class="headerlink" title="查找一个镜像"></a>查找一个镜像</h2><ol>
+<li>通过命令</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker search 镜像名</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li><p>去hub.docker.com</p>
+</li>
+<li><p>去国内镜像网站 <a href="https://www.daocloud.io" target="_blank" rel="noopener">https://www.daocloud.io</a></p>
+</li>
+</ol>
+<h2 id="构建自己的镜像"><a href="#构建自己的镜像" class="headerlink" title="构建自己的镜像"></a>构建自己的镜像</h2><ol>
+<li>通过容器构建</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">docker commit </span><br><span class="line"></span><br><span class="line"><span class="comment">// -a --author="" 指定镜像的作者，如： -a BugWang bugwang@qq.com</span></span><br><span class="line"><span class="comment">// -m --message="" 描述信息</span></span><br><span class="line"><span class="comment">// -p --pause=true 暂停正在运行的容器</span></span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>通过Dockerfile文件构建</li>
+</ol>
+<p><a href>Dockerfile详解</a></p>
 
       
     </div>
@@ -744,7 +765,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">15</span>
+                    <span class="site-state-item-count">22</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -783,7 +804,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">11</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">13</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -854,7 +879,25 @@
                     
                       
                     
-                    <span class="site-state-item-count">27</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">36</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -907,7 +950,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Docker有什么作用？"><span class="nav-number">1.</span> <span class="nav-text">Docker有什么作用？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Docker的组成"><span class="nav-number">2.</span> <span class="nav-text">Docker的组成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CentOS中Docker安装和启动"><span class="nav-number">3.</span> <span class="nav-text">CentOS中Docker安装和启动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#获取镜像资源"><span class="nav-number">4.</span> <span class="nav-text">获取镜像资源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Docker常用命令"><span class="nav-number">5.</span> <span class="nav-text">Docker常用命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#运行容器时指定端口映射"><span class="nav-number">6.</span> <span class="nav-text">运行容器时指定端口映射</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在容器中部署Nginx服务"><span class="nav-number">7.</span> <span class="nav-text">在容器中部署Nginx服务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何将网站放到Docker中的Nginx？"><span class="nav-number">8.</span> <span class="nav-text">如何将网站放到Docker中的Nginx？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何通过宿主机的80端口访问-webapp1-和-webapp2-两个网站呢"><span class="nav-number">9.</span> <span class="nav-text">如何通过宿主机的80端口访问 webapp1 和 webapp2 两个网站呢</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Docker有什么作用？"><span class="nav-number">1.</span> <span class="nav-text">Docker有什么作用？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Docker的组成"><span class="nav-number">2.</span> <span class="nav-text">Docker的组成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CentOS中Docker安装和启动"><span class="nav-number">3.</span> <span class="nav-text">CentOS中Docker安装和启动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#获取镜像资源"><span class="nav-number">4.</span> <span class="nav-text">获取镜像资源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Docker常用命令"><span class="nav-number">5.</span> <span class="nav-text">Docker常用命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#运行容器时指定端口映射"><span class="nav-number">6.</span> <span class="nav-text">运行容器时指定端口映射</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在容器中部署Nginx服务"><span class="nav-number">7.</span> <span class="nav-text">在容器中部署Nginx服务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何将网站放到Docker中的Nginx？"><span class="nav-number">8.</span> <span class="nav-text">如何将网站放到Docker中的Nginx？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何通过宿主机的80端口访问-webapp1-和-webapp2-两个网站呢"><span class="nav-number">9.</span> <span class="nav-text">如何通过宿主机的80端口访问 webapp1 和 webapp2 两个网站呢</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查找一个镜像"><span class="nav-number">10.</span> <span class="nav-text">查找一个镜像</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#构建自己的镜像"><span class="nav-number">11.</span> <span class="nav-text">构建自己的镜像</span></a></li></ol></div>
             
 
           </div>
@@ -928,7 +971,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2019 – <span itemprop="copyrightYear">2020</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>

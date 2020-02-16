@@ -3,8 +3,85 @@
 
 
     <url>
+        <loc>https://www.ruizhi.work/tags/mapboxgl/</loc>
+        <lastmod>2020-02-04T16:22:32.956Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://www.ruizhi.work/tags/docker-compose/</loc>
+        <lastmod>2020-01-16T16:26:19.031Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://www.ruizhi.work/tags/docker/</loc>
+        <lastmod>2020-01-16T16:26:19.031Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://www.ruizhi.work/tags/geoserver/</loc>
+        <lastmod>2020-01-16T16:26:19.031Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://www.ruizhi.work/tags/nginx%E8%B7%A8%E5%9F%9F%E9%85%8D%E7%BD%AE/</loc>
+        <lastmod>2020-01-03T12:58:50.055Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://www.ruizhi.work/tags/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86/</loc>
+        <lastmod>2020-01-03T12:58:50.055Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://www.ruizhi.work/tags/%E8%B7%A8%E5%9F%9F/</loc>
+        <lastmod>2020-01-03T12:58:50.055Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://www.ruizhi.work/tags/vue/</loc>
+        <lastmod>2020-01-03T12:58:50.055Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://www.ruizhi.work/tags/Docker-compose/</loc>
+        <lastmod>2020-01-03T12:58:38.472Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
         <loc>https://www.ruizhi.work/tags/Docker/</loc>
-        <lastmod>2019-12-21T20:07:44.893Z</lastmod>
+        <lastmod>2019-12-23T10:50:08.857Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://www.ruizhi.work/tags/Dockerfile/</loc>
+        <lastmod>2019-12-23T10:12:11.931Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://www.ruizhi.work/tags/MongoDB/</loc>
+        <lastmod>2019-12-22T19:48:43.077Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
@@ -31,13 +108,6 @@
     </url>
 
     <url>
-        <loc>https://www.ruizhi.work/tags/mapboxgl/</loc>
-        <lastmod>2019-12-18T14:38:54.446Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://www.ruizhi.work/tags/EditorConfig/</loc>
         <lastmod>2019-12-18T09:06:19.915Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -46,13 +116,6 @@
 
     <url>
         <loc>https://www.ruizhi.work/tags/eslint/</loc>
-        <lastmod>2019-12-18T09:06:19.915Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://www.ruizhi.work/tags/vue/</loc>
         <lastmod>2019-12-18T09:06:19.915Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>

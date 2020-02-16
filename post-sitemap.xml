@@ -8,8 +8,64 @@
     </url>
 
     <url>
+        <loc>https://www.ruizhi.work/2020-02-05-MapboxGl%E7%9F%A5%E8%AF%86%E7%82%B9%E8%AE%B0%E5%BD%95/</loc>
+        <lastmod>2020-02-04T16:22:32.956Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://www.ruizhi.work/2020-01-16-CentOS7%E5%AE%89%E8%A3%85GeoServer/</loc>
+        <lastmod>2020-01-16T16:26:19.031Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://www.ruizhi.work/2020-01-03-%E4%BB%8E%E9%9B%B6%E9%85%8D%E7%BD%AEdocker-compose%E5%AE%9E%E6%93%8D%E8%AE%B0%E5%BD%95/</loc>
+        <lastmod>2020-01-03T21:19:50.311Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://www.ruizhi.work/2019-12-25-vue%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E5%92%8C%E7%94%9F%E4%BA%A7%E7%8E%AF%E5%A2%83%E7%9A%84%E8%B7%A8%E5%9F%9F%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/</loc>
+        <lastmod>2020-01-03T12:58:50.055Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://www.ruizhi.work/2019-12-23-Docker-Compose%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</loc>
+        <lastmod>2020-01-03T12:58:38.472Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
         <loc>https://www.ruizhi.work/2019-12-21-Docker%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</loc>
-        <lastmod>2019-12-21T20:07:44.893Z</lastmod>
+        <lastmod>2019-12-23T10:50:08.857Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://www.ruizhi.work/2019-12-23-Dockerfile%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4%E8%AF%A6%E8%A7%A3/</loc>
+        <lastmod>2019-12-23T10:12:11.931Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://www.ruizhi.work/2019-12-23-MongoDB%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</loc>
+        <lastmod>2019-12-22T19:48:43.077Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 

@@ -1,0 +1,1458 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4/css/font-awesome.min.css">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.1.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="公司服务器被攻击，最后硬盘格式化了，之前后台比较混乱，没有统一的管理，最近学习了Docker，今天正好来实操一下。  系统环境12cat /etc/redhat-release # CentOS Linux release 7.6.1810 (Core) 安装Docker123456789yum install docker# 安装完成查看版本号docker -v# Docker version">
+<meta name="keywords" content="docker,docker-compose">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从零配置docker compose实操记录">
+<meta property="og:url" content="https://www.ruizhi.work/2020-01-03-从零配置docker-compose实操记录/index.html">
+<meta property="og:site_name" content="BugWang的博客">
+<meta property="og:description" content="公司服务器被攻击，最后硬盘格式化了，之前后台比较混乱，没有统一的管理，最近学习了Docker，今天正好来实操一下。  系统环境12cat /etc/redhat-release # CentOS Linux release 7.6.1810 (Core) 安装Docker123456789yum install docker# 安装完成查看版本号docker -v# Docker version">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-01-03T21:19:50.311Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="从零配置docker compose实操记录">
+<meta name="twitter:description" content="公司服务器被攻击，最后硬盘格式化了，之前后台比较混乱，没有统一的管理，最近学习了Docker，今天正好来实操一下。  系统环境12cat /etc/redhat-release # CentOS Linux release 7.6.1810 (Core) 安装Docker123456789yum install docker# 安装完成查看版本号docker -v# Docker version">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="https://www.ruizhi.work/2020-01-03-从零配置docker-compose实操记录/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>从零配置docker compose实操记录 | BugWang的博客</title>
+  
+
+
+
+
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?828010f37a157cc5c77a7b6c62a16af0";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">BugWang的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">WEB前端工作记录</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签<span class="badge">36</span></a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类<span class="badge">13</span></a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">22</span></a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-commonweal">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/404.html" rel="section"><i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>公益 404</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.ruizhi.work/2020-01-03-从零配置docker-compose实操记录/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BugWang">
+      <meta itemprop="description" content="努力工作，快乐生活！">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BugWang的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">从零配置docker compose实操记录
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-01-03 21:18:42" itemprop="dateCreated datePublished" datetime="2020-01-03T21:18:42+08:00">2020-01-03</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2020-01-04 05:19:50" itemprop="dateModified" datetime="2020-01-04T05:19:50+08:00">2020-01-04</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Docker/" itemprop="url" rel="index"><span itemprop="name">Docker</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
+                <a href="/2020-01-03-从零配置docker-compose实操记录/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2020-01-03-从零配置docker-compose实操记录/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>公司服务器被攻击，最后硬盘格式化了，之前后台比较混乱，没有统一的管理，最近学习了Docker，今天正好来实操一下。</p>
+</blockquote>
+<h2 id="系统环境"><a href="#系统环境" class="headerlink" title="系统环境"></a>系统环境</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cat /etc/redhat-release </span><br><span class="line"><span class="comment"># CentOS Linux release 7.6.1810 (Core)</span></span><br></pre></td></tr></table></figure>
+<h2 id="安装Docker"><a href="#安装Docker" class="headerlink" title="安装Docker"></a>安装Docker</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">yum install docker</span><br><span class="line"><span class="comment"># 安装完成查看版本号</span></span><br><span class="line">docker -v</span><br><span class="line"><span class="comment"># Docker version 1.13.1, build 7f2769b/1.13.1</span></span><br><span class="line">systemctl start docker</span><br><span class="line"><span class="comment"># 启动docker服务</span></span><br><span class="line">systemctl <span class="built_in">enable</span> docker</span><br><span class="line"><span class="comment"># Created symlink from /etc/systemd/system/multi-user.target.wants/docker.service to /usr/lib/systemd/system/docker.service.</span></span><br><span class="line"><span class="comment"># 将docker设置为开机自动启动</span></span><br></pre></td></tr></table></figure>
+<h2 id="安装docker-compose"><a href="#安装docker-compose" class="headerlink" title="安装docker-compose"></a>安装docker-compose</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">curl -L https://get.daocloud.io/docker/compose/releases/download/1.25.0/docker-compose-`uname -s`-`uname -m` &gt; /usr/<span class="built_in">local</span>/bin/docker-compose</span><br><span class="line"><span class="comment"># 国内镜像，官方地址很慢，不稳定</span></span><br><span class="line"></span><br><span class="line">chmod +x /usr/<span class="built_in">local</span>/bin/docker-compose</span><br><span class="line"><span class="comment"># 赋予执行权限</span></span><br><span class="line"></span><br><span class="line">docker-compose -v </span><br><span class="line"><span class="comment"># 查看本本：docker-compose version 1.25.0, build 0a186604</span></span><br></pre></td></tr></table></figure>
+<h2 id="下载需要的镜像Image"><a href="#下载需要的镜像Image" class="headerlink" title="下载需要的镜像Image"></a>下载需要的镜像Image</h2><ul>
+<li><a href="https://hub.docker.com/" target="_blank" rel="noopener">https://hub.docker.com/</a></li>
+<li><a href="https://hub.daocloud.io/" target="_blank" rel="noopener">https://hub.daocloud.io/</a></li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">docker pull nginx</span><br><span class="line"><span class="comment"># 默认下载最新版本</span></span><br><span class="line">docker pull jwilder/nginx-proxy</span><br><span class="line"><span class="comment"># 这个是用来做自动反向代理的镜像</span></span><br><span class="line">docker pull jwilder/nginx-proxy:alpine</span><br><span class="line"><span class="comment"># 这个版本支持ssl,就是https协议</span></span><br><span class="line">docker images</span><br><span class="line"><span class="comment"># 查看下载好的镜像列表</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>以上是一些必要的准备，我希望通过一个docker-compose.yml文件管理所有的web应用，比如我有两个应用要部署，分别为web1和web2</p>
+</blockquote>
+<h2 id="步骤1：-创建docker-compose-yml文件"><a href="#步骤1：-创建docker-compose-yml文件" class="headerlink" title="步骤1： 创建docker-compose.yml文件"></a>步骤1： 创建docker-compose.yml文件</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mkdir myweb</span><br><span class="line"><span class="comment"># 创建目录myweb</span></span><br><span class="line"><span class="built_in">cd</span> myweb</span><br><span class="line"><span class="comment"># 进入myweb目录</span></span><br><span class="line">mkdir web1 web2</span><br><span class="line"><span class="comment"># 创建web1和web2目录分辨用于存放应用文件</span></span><br><span class="line">vim docker-compose.yml</span><br><span class="line"><span class="comment"># 创建并编辑docker-compose.yml文件</span></span><br></pre></td></tr></table></figure>
+<p>文件内容如下：</p>
+<blockquote>
+<p>特别说明：缩进用空格，一开始用的tab一直报错</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">version: <span class="string">"3.7"</span></span><br><span class="line">services:</span><br><span class="line">    web1:</span><br><span class="line">        <span class="comment"># 使用nginx镜像，如果本机没有这个镜像会自己下载</span></span><br><span class="line">        image: nginx</span><br><span class="line">        <span class="comment"># 设置目录映射，将当前目录下的web1目录映射成docker容器中的/usr/share/nginx/html目录</span></span><br><span class="line">        <span class="comment"># :ro 设置为只读模式，防止文件损坏，默认为:rw可读可写，静态服务器不需要操作文件所以设置只读</span></span><br><span class="line">        volumes:</span><br><span class="line">            - ./web1:/usr/share/nginx/html:ro</span><br><span class="line">        <span class="comment"># 将宿主机的8080端口映射成docker容器的80端口</span></span><br><span class="line">        ports:</span><br><span class="line">            - <span class="string">"8080:80"</span></span><br><span class="line">    web2:</span><br><span class="line">        image: nginx</span><br><span class="line">        volumes:</span><br><span class="line">            - ./web2:/usr/share/nginx/html:ro</span><br><span class="line">        ports:</span><br><span class="line">            - <span class="string">"8081:80"</span></span><br></pre></td></tr></table></figure>
+<p>保存并推出</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 按esc推出编辑模式</span></span><br><span class="line">:wq</span><br><span class="line"><span class="comment"># 保存并推出，现在就回到了shell中</span></span><br></pre></td></tr></table></figure>
+<h2 id="步骤2：启动docker容器"><a href="#步骤2：启动docker容器" class="headerlink" title="步骤2：启动docker容器"></a>步骤2：启动docker容器</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -d 后台模式运行容器</span></span><br><span class="line">docker-compose up -d</span><br><span class="line"><span class="comment"># Creating myweb_web1_1 ... done</span></span><br><span class="line"><span class="comment"># Creating myweb_web2_1  ... done</span></span><br><span class="line"><span class="comment"># 出现上面的提示表示运行成功</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看状态</span></span><br><span class="line">docker-compose ps</span><br><span class="line"></span><br><span class="line"><span class="comment">#   Name                Command          State          Ports        </span></span><br><span class="line"><span class="comment"># ------------------------------------------------------------------------</span></span><br><span class="line"><span class="comment"># myweb_web1_1    nginx -g daemon off;   Up      0.0.0.0:8081-&gt;80/tcp</span></span><br><span class="line"><span class="comment"># myweb_web2_1    nginx -g daemon off;   Up      0.0.0.0:8080-&gt;80/tcp</span></span><br></pre></td></tr></table></figure>
+<h2 id="步骤3：上传应用的文件到对应的目录"><a href="#步骤3：上传应用的文件到对应的目录" class="headerlink" title="步骤3：上传应用的文件到对应的目录"></a>步骤3：上传应用的文件到对应的目录</h2><p>用ftp工具上传分别上传web1和web2的文件即可，现在测试，手动编写index.html放到web1和web2中</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> web1</span><br><span class="line"><span class="comment"># 进入web1目录</span></span><br><span class="line">vim index.html</span><br><span class="line"><span class="comment"># 输入&lt;h1&gt;web1&lt;/h1&gt;,保存并推出，访问宿主机的8080端口测试即可</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>到这里应用已经部署成功，但是每次访问应用都需要输入对应的端口，这样肯定不行，我希望可以通过不同的域名访问不同的应用，比如： web1.xxx.com 就可以访问web1应用。</p>
+</blockquote>
+<blockquote>
+<p>方法1： 在启动一个nginx容器，映射到宿主机的80端口，设置反向代理来解决这个问题，但每次增加应用都需要手动增加反向代理的配置，还是比较麻烦</p>
+</blockquote>
+<blockquote>
+<p>方法2: 通过nginx-proxy工具自动配置反向代理，nginx-proxy设置了一个运行nginx和docker-gen的容器。docker-gen为nginx生成反向代理配置，并在容器启动和停止时重新加载nginx。</p>
+</blockquote>
+<h2 id="步骤1：-配置二级域名"><a href="#步骤1：-配置二级域名" class="headerlink" title="步骤1： 配置二级域名"></a>步骤1： 配置二级域名</h2><p>进去域名管理中分别配置两个A记录，web1和web2指向服务器的ip地址,这个比较简单服务商都会有提示</p>
+<h2 id="步骤2：修改docker-compose-yml文件"><a href="#步骤2：修改docker-compose-yml文件" class="headerlink" title="步骤2：修改docker-compose.yml文件"></a>步骤2：修改docker-compose.yml文件</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">version: <span class="string">"3.7"</span></span><br><span class="line">services:</span><br><span class="line">    <span class="comment"># 创建自动代理容器</span></span><br><span class="line">    nginx-proxy:</span><br><span class="line">        image: jwilder/nginx-proxy:alpine</span><br><span class="line">        <span class="comment"># 给容器命名</span></span><br><span class="line">        container_name: nginx-proxy</span><br><span class="line">        <span class="comment"># 设置代理的访问端口，通常为80，所有web应用通过80端口访问</span></span><br><span class="line">        ports:</span><br><span class="line">            - <span class="string">"80:80"</span></span><br><span class="line">        volumes:</span><br><span class="line">            <span class="comment"># 设置目录映射，固定写法</span></span><br><span class="line">            - /var/run/docker.sock:/tmp/docker.sock:ro</span><br><span class="line"></span><br><span class="line">    web1:</span><br><span class="line">        <span class="comment"># 使用nginx镜像，如果本机没有这个镜像会自己下载</span></span><br><span class="line">        image: nginx</span><br><span class="line">        <span class="comment"># 设置目录映射，将当前目录下的web1目录映射成docker容器中的/usr/share/nginx/html目录</span></span><br><span class="line">        <span class="comment"># :ro 设置为只读模式，防止文件损坏，默认为:rw可读可写，静态服务器不需要操作文件所以设置只读</span></span><br><span class="line">        volumes:</span><br><span class="line">            - ./web1:/usr/share/nginx/html:ro</span><br><span class="line">        <span class="comment"># 有了代理就不需要把应用容器的80端口映射到宿主机了，代理会将请求转发到对应的应用</span></span><br><span class="line">        <span class="comment"># ports:</span></span><br><span class="line">        <span class="comment">#    - "8080:80"</span></span><br><span class="line">        environment:</span><br><span class="line">            <span class="comment"># 代理通过这两个环境变量识别，要将请求转发到那个应用， 如果是80端口可以不设置VIRTUAL_PORT</span></span><br><span class="line">            - VIRTUAL_PORT=80</span><br><span class="line">            <span class="comment"># 多个域名需要用逗号隔开</span></span><br><span class="line">            - VIRTUAL_HOST=a.xxx.com,b.xxx.com</span><br><span class="line">            </span><br><span class="line">    web2:</span><br><span class="line">        image: nginx</span><br><span class="line">        volumes:</span><br><span class="line">            - ./web2:/usr/share/nginx/html:ro</span><br><span class="line">        environment:</span><br><span class="line">            <span class="comment"># 代理通过这两个环境变量识别，要将请求转发到那个应用， 如果是80端口可以不设置VIRTUAL_PORT</span></span><br><span class="line">            - VIRTUAL_PORT=80</span><br><span class="line">            <span class="comment"># 多个域名需要用逗号隔开</span></span><br><span class="line">            - VIRTUAL_HOST=c.xxx.com,d.xxx.com</span><br></pre></td></tr></table></figure>
+<p>修改完配置文件后，保存退出重庆启动容器</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">docker-compose stop</span><br><span class="line"><span class="comment"># 停止正在运行的容器</span></span><br><span class="line">docker-compose rm -f</span><br><span class="line"><span class="comment"># 删除停止的容器</span></span><br><span class="line">docker-compose up -d</span><br><span class="line"><span class="comment"># 通过新的配置文件启动容器,提示如下</span></span><br><span class="line"><span class="comment"># Creating nginx-proxy ... done</span></span><br><span class="line"><span class="comment"># Creating myweb_web1_1  ... done</span></span><br><span class="line"><span class="comment"># Creating myweb_web2_1 ... done</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>现在我们就成功设置了方向代理，通过统一的80端口访问web1和web2，a.xxx.com和b.xxx.com可以访问web1应用；c.xxx.com和d.xxx.com可以访问web2应用。 可以通过curl命令验证一下</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">curl -H <span class="string">"Host: a.xxx.com"</span> localhost</span><br><span class="line"><span class="comment"># 应该会返回前面编写的index.html的内容：&lt;h1&gt;web1&lt;/h1&gt;</span></span><br><span class="line"><span class="comment"># 如果已经设置了二级域名，可以直接访问域名测试</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>如果我们现在需要增加web3应用，只需要在docker-compose.yml中增加配置即可</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">version: <span class="string">"3.7"</span></span><br><span class="line">services:</span><br><span class="line">    nginx-proxy:</span><br><span class="line">        image: jwilder/nginx-proxy:alpine</span><br><span class="line">        container_name: nginx-proxy</span><br><span class="line">        ports:</span><br><span class="line">            - <span class="string">"80:80"</span></span><br><span class="line">        volumes:</span><br><span class="line">            - /var/run/docker.sock:/tmp/docker.sock:ro</span><br><span class="line"></span><br><span class="line">    web1:</span><br><span class="line">        image: nginx</span><br><span class="line">        volumes:</span><br><span class="line">            - ./web1:/usr/share/nginx/html:ro</span><br><span class="line">        environment:</span><br><span class="line">            - VIRTUAL_PORT=80</span><br><span class="line">            - VIRTUAL_HOST=a.xxx.com,b.xxx.com</span><br><span class="line">            </span><br><span class="line">    web2:</span><br><span class="line">        image: nginx</span><br><span class="line">        volumes:</span><br><span class="line">            - ./web2:/usr/share/nginx/html:ro</span><br><span class="line">        environment:</span><br><span class="line">            - VIRTUAL_PORT=80</span><br><span class="line">            - VIRTUAL_HOST=c.xxx.com,d.xxx.com</span><br><span class="line">            </span><br><span class="line">    web3:</span><br><span class="line">        image: nginx</span><br><span class="line">        volumes:</span><br><span class="line">            - ./web3:/usr/share/nginx/html:ro</span><br><span class="line">        environment:</span><br><span class="line">            <span class="comment"># 没有设置端口默认为80</span></span><br><span class="line">            - VIRTUAL_HOST=e.xxx.com</span><br></pre></td></tr></table></figure>
+<p>增加好配置后，我们可以向前面一样，停止所有服务并删除后，从新全部启动，当然这样不是很科学，我们可以用更优雅的方式启动新增的应用</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker-compose up --build --no-deps -d web3</span><br><span class="line"><span class="comment"># 这样就优雅的启动了web3</span></span><br></pre></td></tr></table></figure>
+<h2 id="如何支持https协议"><a href="#如何支持https协议" class="headerlink" title="如何支持https协议"></a>如何支持https协议</h2><p><a href="https://www.jianshu.com/p/2c6fd9e43aa7" target="_blank" rel="noopener">https://www.jianshu.com/p/2c6fd9e43aa7</a><br><a href="https://hub.docker.com/r/jwilder/nginx-proxy" target="_blank" rel="noopener">https://hub.docker.com/r/jwilder/nginx-proxy</a></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div id="reward-container">
+  <div>您的支持将鼓励我继续创作！</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/wechatpay.jpg" alt="BugWang 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.jpg" alt="BugWang 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/docker/" rel="tag"># docker</a>
+          
+            <a href="/tags/docker-compose/" rel="tag"># docker-compose</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019-12-25-vue开发环境和生产环境的跨域问题解决/" rel="next" title="vue开发环境和生产环境的跨域问题解决">
+                <i class="fa fa-chevron-left"></i> vue开发环境和生产环境的跨域问题解决
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020-01-16-CentOS7安装GeoServer/" rel="prev" title="CentOS7通过docker compose安装GeoServer">
+                CentOS7通过docker compose安装GeoServer <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">BugWang</p>
+              <div class="site-description motion-element" itemprop="description">努力工作，快乐生活！</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">22</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">13</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">36</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/ruizhi1984" title="GitHub &rarr; https://github.com/ruizhi1984" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#系统环境"><span class="nav-number">1.</span> <span class="nav-text">系统环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装Docker"><span class="nav-number">2.</span> <span class="nav-text">安装Docker</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装docker-compose"><span class="nav-number">3.</span> <span class="nav-text">安装docker-compose</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#下载需要的镜像Image"><span class="nav-number">4.</span> <span class="nav-text">下载需要的镜像Image</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#步骤1：-创建docker-compose-yml文件"><span class="nav-number">5.</span> <span class="nav-text">步骤1： 创建docker-compose.yml文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#步骤2：启动docker容器"><span class="nav-number">6.</span> <span class="nav-text">步骤2：启动docker容器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#步骤3：上传应用的文件到对应的目录"><span class="nav-number">7.</span> <span class="nav-text">步骤3：上传应用的文件到对应的目录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#步骤1：-配置二级域名"><span class="nav-number">8.</span> <span class="nav-text">步骤1： 配置二级域名</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#步骤2：修改docker-compose-yml文件"><span class="nav-number">9.</span> <span class="nav-text">步骤2：修改docker-compose.yml文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何支持https协议"><span class="nav-number">10.</span> <span class="nav-text">如何支持https协议</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2019 – <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">BugWang</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.1.1</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.1"></script>
+
+  <script src="/js/motion.js?v=7.1.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.1.1"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.1.1"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.1"></script>
+<script src="/js/post-details.js?v=7.1.1"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+  
+
+<script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
+
+
+
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: 'KgOtulOCax9jH1T5tcY9D8A9-gzGzoHsz',
+    appKey: 'b5c08XMXCbO0Qc9JvFmj79LG',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn'
+  });
+</script>
+
+
+
+
+  
+
+
+  
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

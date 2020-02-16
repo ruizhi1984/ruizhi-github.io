@@ -1,0 +1,1505 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4/css/font-awesome.min.css">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.1.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="Dockerfile是一个文本文件，其内包含了一条条的指令，每一条指令构建一层，因此每一条指令的内容，就是描述该层应当如何构建。 FROM两种形式如下： 12FROM &amp;lt;IMAGE&amp;gt;FROM &amp;lt;IMAGE&amp;gt;:&amp;lt;TAG&amp;gt; 栗子： 构建一个nginx镜像 12345678910111213# 创建一个空白目录mkdir mynginx# 进入目录cd mynginx">
+<meta name="keywords" content="Docker,Dockerfile">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Dockerfile常用指令详解">
+<meta property="og:url" content="https://www.ruizhi.work/2019-12-23-Dockerfile常用指令详解/index.html">
+<meta property="og:site_name" content="BugWang的博客">
+<meta property="og:description" content="Dockerfile是一个文本文件，其内包含了一条条的指令，每一条指令构建一层，因此每一条指令的内容，就是描述该层应当如何构建。 FROM两种形式如下： 12FROM &amp;lt;IMAGE&amp;gt;FROM &amp;lt;IMAGE&amp;gt;:&amp;lt;TAG&amp;gt; 栗子： 构建一个nginx镜像 12345678910111213# 创建一个空白目录mkdir mynginx# 进入目录cd mynginx">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-12-23T10:12:11.931Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Dockerfile常用指令详解">
+<meta name="twitter:description" content="Dockerfile是一个文本文件，其内包含了一条条的指令，每一条指令构建一层，因此每一条指令的内容，就是描述该层应当如何构建。 FROM两种形式如下： 12FROM &amp;lt;IMAGE&amp;gt;FROM &amp;lt;IMAGE&amp;gt;:&amp;lt;TAG&amp;gt; 栗子： 构建一个nginx镜像 12345678910111213# 创建一个空白目录mkdir mynginx# 进入目录cd mynginx">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="https://www.ruizhi.work/2019-12-23-Dockerfile常用指令详解/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Dockerfile常用指令详解 | BugWang的博客</title>
+  
+
+
+
+
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?828010f37a157cc5c77a7b6c62a16af0";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">BugWang的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">WEB前端工作记录</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签<span class="badge">36</span></a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类<span class="badge">13</span></a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">22</span></a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-commonweal">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/404.html" rel="section"><i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>公益 404</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.ruizhi.work/2019-12-23-Dockerfile常用指令详解/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BugWang">
+      <meta itemprop="description" content="努力工作，快乐生活！">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BugWang的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Dockerfile常用指令详解
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-12-23 13:33:45 / 修改时间：18:12:11" itemprop="dateCreated datePublished" datetime="2019-12-23T13:33:45+08:00">2019-12-23</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Docker/" itemprop="url" rel="index"><span itemprop="name">Docker</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
+                <a href="/2019-12-23-Dockerfile常用指令详解/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019-12-23-Dockerfile常用指令详解/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Dockerfile是一个文本文件，其内包含了一条条的指令，每一条指令构建一层，因此每一条指令的内容，就是描述该层应当如何构建。</p>
+<h2 id="FROM"><a href="#FROM" class="headerlink" title="FROM"></a>FROM</h2><p>两种形式如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">FROM &lt;IMAGE&gt;</span><br><span class="line">FROM &lt;IMAGE&gt;:&lt;TAG&gt;</span><br></pre></td></tr></table></figure>
+<p><strong>栗子：</strong></p>
+<p>构建一个nginx镜像</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建一个空白目录</span></span><br><span class="line">mkdir mynginx</span><br><span class="line"><span class="comment"># 进入目录</span></span><br><span class="line"><span class="built_in">cd</span> mynginx</span><br><span class="line"><span class="comment"># 创建一个文本文件dockerfile</span></span><br><span class="line">touch dockerfile</span><br><span class="line"><span class="comment"># 编辑dockerfile文件</span></span><br><span class="line">vim dockerfile</span><br><span class="line"><span class="comment"># 内容如下:</span></span><br><span class="line"><span class="comment"># 指定镜像的基础，使用官方提供的nginx镜像</span></span><br><span class="line">FROM nginx  </span><br><span class="line"><span class="comment"># 将Hello Docker!写入到nginx默认的首页中</span></span><br><span class="line">RUN <span class="built_in">echo</span> <span class="string">'&lt;h1&gt;Hello Docker!&lt;/h1&gt;'</span> &gt; /user/share/nginx/html/index.html</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>所谓定制镜像，一定是以一个镜像为基础，在其上进行定制。基础镜像是必须指定的，而FROM就是指定基础镜像，因此一个Dockerfile中FROM是必备的指令，并且必须是第一条指令。</p>
+</blockquote>
+<blockquote>
+<p>在Docker Hub上有非常多的高质量的官方镜像，有可以直接拿来使用的服务类的镜像，如nginx、redis、mysql、tomcat等；可以在其中寻找一个最符合我们最终目标的镜像为基础镜像进行定制。如果没有找到对应服务的镜像，官方镜像中还提供了一些更为基础的操作系统镜像，如ubuntu、debian、centos、alpine等，这些操作系统的软件库为我们提供了更广阔的扩展空间。</p>
+</blockquote>
+<blockquote>
+<p>除了选择现有镜像为基础镜像外，Docker还存在一个特殊的镜像，名为scratch。这个镜像是虚拟的概念，并不实际存在，它表示一个空白的镜像。<br>FROM scratch …<br>如果你以scratch为基础镜像的话，意味着你不以任何镜像为基础，接下来所写的指令将作为镜像第一层开始存在。<br>对于Linux下静态编译的程序来说，并不需要有操作系统提供运行时支持，所需的一切库都已经在可执行文件里了，因此直接FROM scratch会让镜像体积更加小巧。使用Go语言开发的应用很多会使用这种方式来制作镜像，这也是为什么有人认为Go是特别适应容器微服务架构的语言的原因之一。</p>
+</blockquote>
+<h2 id="MAINTAINER"><a href="#MAINTAINER" class="headerlink" title="MAINTAINER"></a>MAINTAINER</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">MAINTAINER &lt;NAME&gt;</span><br><span class="line"><span class="comment"># 通常写作者的名字和邮箱</span></span><br><span class="line">MAINTAINER BugWang BugWang@bugwang.work</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>指定镜像的作者信息，包含镜像的所有者和联系人信息</p>
+</blockquote>
+<h2 id="RUN"><a href="#RUN" class="headerlink" title="RUN"></a>RUN</h2><p>用于指定构建镜像时运行的命令，两种模式：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">RUN &lt;<span class="built_in">command</span>&gt; (shell模式)</span><br><span class="line"><span class="comment"># 将文本写的到指定的文件</span></span><br><span class="line">RUN <span class="built_in">echo</span> <span class="string">'&lt;h1&gt;Hello,Docker！&lt;/h1&gt;'</span> &gt; /usr/share/nginx/html/index.html</span><br><span class="line"></span><br><span class="line">RUN [ <span class="string">"executable"</span>, <span class="string">"param1"</span>, <span class="string">"param2"</span> ] (<span class="built_in">exec</span>模式)</span><br><span class="line"><span class="comment"># 安装httpd和ftp，多条RUN指令可以合并为一条，这样在构建的时候会减少产生中间层镜像</span></span><br><span class="line">RUN yum install httpd &amp;&amp; yum install ftp</span><br></pre></td></tr></table></figure>
+<p><strong>用上面创建的dockerfile构建一个镜像</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment"># 进入dockerfile文件所在的目录执行build命令</span></span><br><span class="line"> <span class="comment"># 构建镜像并通过-t指定名字为：mynginx，tag：v1</span></span><br><span class="line">docker build -t mynginx:v1</span><br><span class="line"><span class="comment"># 执行命令后会显示构建的过程，最后返回镜像的id</span></span><br><span class="line"><span class="comment"># 查看构建好的镜像</span></span><br><span class="line">docker images mynginx</span><br><span class="line"><span class="comment"># 运行这个镜像</span></span><br><span class="line">docker run -d --name mynginx -p 8080:80 mynginx:v1</span><br><span class="line"><span class="comment"># 访问宿主机的8080端口可以看到Hello Docker！</span></span><br></pre></td></tr></table></figure>
+<h2 id="EXPOSE-端口的声明注意不是定义"><a href="#EXPOSE-端口的声明注意不是定义" class="headerlink" title="EXPOSE 端口的声明注意不是定义"></a>EXPOSE 端口的声明注意不是定义</h2><p>指定运行该镜像的容器使用的端口，可以是多个。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">EXPOSE &lt;PORT&gt;</span><br></pre></td></tr></table></figure>
+<p>使用这个指令的目的是告诉应用程序容器内应用程序会使用的端口，在运行时还需要使用-p参数指定映射端口。这是docker处于安全的目的，在运行时并不会因为这个声明就自动打开端口。</p>
+<p>在Dockerfile中写入这样的声明有两个好处：</p>
+<ol>
+<li>是帮助镜像使用者理解这个镜像服务的守护端口，以方便配置映射；</li>
+<li>在运行是使随机端口映射时，也就是docker run -P时，会自动随机映射EXPOSE端口。</li>
+</ol>
+<h2 id="CMD-容器启动命令"><a href="#CMD-容器启动命令" class="headerlink" title="CMD 容器启动命令"></a>CMD 容器启动命令</h2><p>用于提供容器运行的默认命令，如果在docker run时指定了运行的命令，则CMD命令不会执行。CMD有三种模式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">CMD &lt;command&gt; (shell模式)</span><br><span class="line">CMD [ &quot;executable&quot;, &quot;param1&quot;, &quot;param2&quot; ] (exec模式)</span><br><span class="line">CMD [ &apos;param1&apos;, &apos;param2&apos;] (通常在指定了ENTRYPOINT指令后，用CMD指定具体参数。)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Docker不是虚拟机，容器就是进程。既然是进程，那么在启动容器的时候，需要指定所运行的程序及参数。CMD指令就是用于指定默认的容器主进程启动命令的。</p>
+</blockquote>
+<h2 id="ENTRYPOINT-入口点"><a href="#ENTRYPOINT-入口点" class="headerlink" title="ENTRYPOINT 入口点"></a>ENTRYPOINT 入口点</h2><p>与CMD类似，ENTRYPOINT不会被docker run中指定的命令覆盖，如果想覆盖ENTRYPOINT，则需要在docker run中指定–entrypoint选项</p>
+<p>它有两种模式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ENTRYPOINT &lt;command&gt; (shell模式)</span><br><span class="line">ENTRYPOINT [ &quot;executable&quot;, &quot;param1&quot;, &quot;param2&quot; ] (exec模式)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>当指定了ENTRYPOINT后，CMD的含义就发生了改变，不再是直接的运行其命令，而是将CMD的内容作为参数传给ENTRYPOINT指令，换句话说实际执行时，将变为：</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;ENTRYPOINT&gt;&quot;&lt;CMD&gt;&quot;</span><br></pre></td></tr></table></figure>
+<h2 id="ADD和COPY-复制文件"><a href="#ADD和COPY-复制文件" class="headerlink" title="ADD和COPY 复制文件"></a>ADD和COPY 复制文件</h2><p>作用都是将文件或目录复制到Dockerfile构建的镜像中</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 源文件路径使用Dockerfile相对路径，目标路径使用绝对路径。</span></span><br><span class="line">ADD &lt;src&gt; &lt;dest&gt;</span><br><span class="line">ADD [<span class="string">"&lt;src&gt;"</span> <span class="string">"&lt;dest&gt;"</span>] (适用于文件路径包含空格的情况)</span><br><span class="line"></span><br><span class="line">COPY &lt;src&gt; &lt;dest&gt;</span><br><span class="line">COPY [<span class="string">"&lt;src&gt;"</span> <span class="string">"&lt;dest&gt;"</span>] (适用于文件路径包含空格的情况)</span><br><span class="line"><span class="comment"># 栗子</span></span><br><span class="line">COPY package.json /usr/src/app/</span><br><span class="line"><span class="comment"># &lt;源路径&gt;可以是多个，甚至可以是通配符，如：</span></span><br><span class="line">COPY hom* /mydir/ COPY hom?.txt /mydir/</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>ADD指令和COPY的格式和性质基本一致。但是在COPY基础上增加了一些功能。比如&lt;源路径&gt;可以是一个URL,这种情况下，Docker引擎会试图去下载这个链接的文件放到&lt;目标路径&gt;去。</p>
+</blockquote>
+<blockquote>
+<p>在Docker官方的Dockerfile最佳实践文档中要求，尽可能的使用COPY，因此COPY的语义很明确，就是复制文件而已，而ADD则包含了更复杂的功能，其行为也不一定很清晰。最适合使用ADD的场合，就是所提及的需要自动解压缩的场合。</p>
+</blockquote>
+<blockquote>
+<p>因此在COPY和ADD指令中选择的时候，可以遵循这样的原则，所有的文件复制均使用COPY指令，仅在需要自动解压缩的场合使用ADD。</p>
+</blockquote>
+<h2 id="VOLUME-定义匿名卷（存数据的目录）"><a href="#VOLUME-定义匿名卷（存数据的目录）" class="headerlink" title="VOLUME 定义匿名卷（存数据的目录）"></a>VOLUME 定义匿名卷（存数据的目录）</h2><p>容器运行时应该尽量保持容器存储层不发生写操作，对于数据库等需要保存动态数据的应用，其数据库文件应该保存于卷(volume)中，为了防止运行时用户忘记将动态文件所保存目录挂载为卷，在Dockerfile中,我们可以事先指定某些目录挂载为匿名卷，这样在运行时如果用户不指定挂载，其应用也可以正常运行，不会向容器存储层写入大量数据</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">VOLUME /data</span><br><span class="line"><span class="comment"># 这里的/data目录就会再运行时自动挂载为匿名卷，任何向/data中写入的信息都不会记录进容器存储层，从而保证了容器存储层的无状态化</span></span><br></pre></td></tr></table></figure>
+<p>如果运行docker时指定了挂在设置，就可以覆盖这个配置</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将nignx的html存放目录挂在到root/www目录上</span></span><br><span class="line">docker run -d -v /root/wwww:/usr/share/nginx/html mynginx:v1</span><br></pre></td></tr></table></figure>
+<h2 id="WORKDIR-指定工作目录"><a href="#WORKDIR-指定工作目录" class="headerlink" title="WORKDIR 指定工作目录"></a>WORKDIR 指定工作目录</h2><p>使用WORKDIR指令可以来指定工作目录(或者称为当前目录),以后各层的当前目录就被改为指定的目录，如该目录不存在，WORKDIR会帮你建立目录。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">WORKDIR /path/to/workdir</span><br></pre></td></tr></table></figure>
+<p>如果把Dockerfile等同于Shell脚本来书写，这种错误的理解还可能会导致出现下面这样的错误：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RUN cd /app RUN echo &quot;hello&quot;&gt;world.txt</span><br></pre></td></tr></table></figure>
+<p>如果将这个Dockerfile进行构建镜像运行后，会发现找不到 /app/world.txt文件。</p>
+<p>原因是在Shell中，连续两行是同一个进程执行环境，因此前一个命令修改的内存状态，会直接影响后一个命令。</p>
+<p>而在Dockerfile中，这两行RUN命令的执行环境根本不同，是两个完全不同的容器，这就是对Dockerfile构建分层存储的概念不了解导致的错误。</p>
+<p><strong>每一个RUN都是启动一个容器、执行命令、然后提交存储层文件变量。</strong></p>
+<ul>
+<li><p>第一层RUN cd /app的执行仅仅是当前进程的工作目录变量，一个内存上的变化而已，其结果不会造成任何文件变更。</p>
+</li>
+<li><p>第二层的时候，启动的是一个全新的容器，跟第一层的容器更完全没关系，自然不可能继承前一层构建过程中的内存变化。<br>因此如果需要改变以后各层的工作目录的位置，那么应该使用WORKIDR指令。</p>
+</li>
+</ul>
+<h2 id="ENV-设置环境变量"><a href="#ENV-设置环境变量" class="headerlink" title="ENV 设置环境变量"></a>ENV 设置环境变量</h2><p>这个指令很简单，就是设置环境变量而已，无论是后面的其它指令，如RUN，还是运行时的应用，都可以直接使用这里定义的环境变量。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ENV &lt;KEY&gt; &lt;VALUE&gt;</span><br><span class="line">ENV &lt;KEY&gt;=&lt;VALUE&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 栗子：</span></span><br><span class="line">ENV VERSION=1.0 DEBUG=on </span><br><span class="line"><span class="comment"># 使用环境变量</span></span><br><span class="line">NAME=<span class="string">"Happy Feet"</span> <span class="variable">$VERSION</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>下列指令可以支持环境变量展开：ADD、COPY、ENV、EXPOSE、LABEL、USER、WORKDIR、VOLUME、STOPSIGNAL、ONBUILD。</p>
+</blockquote>
+<h2 id="USER-指定当前用户"><a href="#USER-指定当前用户" class="headerlink" title="USER 指定当前用户"></a>USER 指定当前用户</h2><p>USER指令和WORKDIR相似，都是改变环境状态并影响以后的层。WORKDIR是改变工作目录，USER则是改变之后层的执行RUN，CMD以及ENTRYPOINT这类命令的身份。</p>
+<p>USER只是帮助你切换到指定用户而已，这个用户必须是事先建立好的，否则无法切换。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">USER nginx</span><br><span class="line"></span><br><span class="line"><span class="comment"># 栗子</span></span><br><span class="line">RUN groupadd -r redis &amp;&amp; useradd -r -g redis redis USER redis RUN [<span class="string">"redis-server"</span>]</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>镜像就会以nginx身份运行，可以使用uid，gid等各种组合使用</p>
+</blockquote>
+<h2 id="ONBUILD"><a href="#ONBUILD" class="headerlink" title="ONBUILD"></a>ONBUILD</h2><p>为镜像创建触发器，当一个镜像被用作其他镜像的基础镜像时，这个触发器会被执行。当子镜像被构建时会插入触发器中的指令。</p>
+<p>ONBUILD是一个特殊的指令，它后面跟的是其它指令，比如RUN,COPY等，而这些指令，在当前镜像构建时并不会被执行。只有当以前镜像为基础镜像，去构建下一级镜像的时候才会被执行。</p>
+<p>Dockerfile中的其它指令都是为了定制当前镜像而准备的，唯有ONBUILD是为了帮助别人定制自己而准备的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ONBUILD COPY index.html /var/www/html</span><br></pre></td></tr></table></figure>
+<h2 id="HEALTHCHECK-健康检查"><a href="#HEALTHCHECK-健康检查" class="headerlink" title="HEALTHCHECK 健康检查"></a>HEALTHCHECK 健康检查</h2><p>HEALTHCHECK指令是告诉Docker应该如何进行判断容器的状态是否正常，这是Docker1.12引入的新指令。通过该指令指定一行命令，用这行命令来判断容器主进程的服务状态是否还正常，从而比较真实的反应容器实际状态。</p>
+<p>一个镜像指令HEALTHCHECK指令后，用其启动容器，初始状态会为starting,在执行健康检查成功后变为healthy,如果连续一定次数失败，则会变为unhealthy。</p>
+<p>为了帮助排障，健康检查命令的输出(包括stdout以及stderr)都会被存储于健康状态里，可以用docker inspect来查看。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">HEALTHCHECK [选项] CMD &lt;命令&gt;:设置检查容器健康状况的命令</span><br><span class="line">HEALTHCHECK NONE：如果基础镜像有健康检查指令，可以屏蔽掉其健康检查指令</span><br><span class="line"></span><br><span class="line"><span class="comment"># --interval=&lt;间隔&gt;:两次健康检查的间隔，默认为30秒；</span></span><br><span class="line"><span class="comment"># --timeout=&lt;时长&gt;:健康检查命令运行超时时间，如果超过这个时间，本次健康检查就被视为失败，默认30秒；</span></span><br><span class="line"><span class="comment"># --retries=&lt;次数&gt;：当连续失败指定次数后，则将容器状态视为unhealthy,默认3次。</span></span><br></pre></td></tr></table></figure>
+<h2 id="Dockerfile的构建过程"><a href="#Dockerfile的构建过程" class="headerlink" title="Dockerfile的构建过程"></a>Dockerfile的构建过程</h2><ol>
+<li>docker会从Dockerfile文件头FROM指定的基础镜像运行一个容器</li>
+<li>然后执行一条指令，对容器修改</li>
+<li>接着执行类似docker commit的操作，创建新的镜像层</li>
+<li>在基于刚创建的镜像运行一个新的容器</li>
+<li>执行Dockerfile下一条指令，直到所有指令执行完毕</li>
+</ol>
+<blockquote>
+<p>docker会删除中间层创建的容器，但不会删除中间层镜像，所以可以使用docker run运行一个中间层容器，从而查看每一步构建后的镜像状态，这样就可以进行调试。</p>
+</blockquote>
+<h2 id="构建缓存"><a href="#构建缓存" class="headerlink" title="构建缓存"></a>构建缓存</h2><p>docker在构建过程中会将之前构建的镜像看做缓存。</p>
+<p>当第一次构建的时候，构建过程会比较慢，而在此进行相同的构建的时候，会看见using cache字样，表示使用了缓存，构建过程也非常快。</p>
+<p>如果不想使用构建缓存，则在docker build中使用—no-cache选项。</p>
+<p>还可以在Dockerfile中使用ENV REFRESH_DATE 2018-01-01来制定缓存刷新时间，更改这个时间，就会让后面的命令不使用缓存。</p>
+<blockquote>
+<p>官方教程：<a href="https://docs.docker.com/engine/reference/builder/" target="_blank" rel="noopener">https://docs.docker.com/engine/reference/builder/</a></p>
+</blockquote>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div id="reward-container">
+  <div>您的支持将鼓励我继续创作！</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/wechatpay.jpg" alt="BugWang 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.jpg" alt="BugWang 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Docker/" rel="tag"># Docker</a>
+          
+            <a href="/tags/Dockerfile/" rel="tag"># Dockerfile</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019-12-23-Docker-Compose学习笔记/" rel="next" title="Docker Compose学习笔记">
+                <i class="fa fa-chevron-left"></i> Docker Compose学习笔记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019-12-25-vue开发环境和生产环境的跨域问题解决/" rel="prev" title="vue开发环境和生产环境的跨域问题解决">
+                vue开发环境和生产环境的跨域问题解决 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">BugWang</p>
+              <div class="site-description motion-element" itemprop="description">努力工作，快乐生活！</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">22</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">13</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">36</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/ruizhi1984" title="GitHub &rarr; https://github.com/ruizhi1984" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#FROM"><span class="nav-number">1.</span> <span class="nav-text">FROM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MAINTAINER"><span class="nav-number">2.</span> <span class="nav-text">MAINTAINER</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RUN"><span class="nav-number">3.</span> <span class="nav-text">RUN</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#EXPOSE-端口的声明注意不是定义"><span class="nav-number">4.</span> <span class="nav-text">EXPOSE 端口的声明注意不是定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CMD-容器启动命令"><span class="nav-number">5.</span> <span class="nav-text">CMD 容器启动命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ENTRYPOINT-入口点"><span class="nav-number">6.</span> <span class="nav-text">ENTRYPOINT 入口点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ADD和COPY-复制文件"><span class="nav-number">7.</span> <span class="nav-text">ADD和COPY 复制文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VOLUME-定义匿名卷（存数据的目录）"><span class="nav-number">8.</span> <span class="nav-text">VOLUME 定义匿名卷（存数据的目录）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#WORKDIR-指定工作目录"><span class="nav-number">9.</span> <span class="nav-text">WORKDIR 指定工作目录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ENV-设置环境变量"><span class="nav-number">10.</span> <span class="nav-text">ENV 设置环境变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#USER-指定当前用户"><span class="nav-number">11.</span> <span class="nav-text">USER 指定当前用户</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ONBUILD"><span class="nav-number">12.</span> <span class="nav-text">ONBUILD</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HEALTHCHECK-健康检查"><span class="nav-number">13.</span> <span class="nav-text">HEALTHCHECK 健康检查</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dockerfile的构建过程"><span class="nav-number">14.</span> <span class="nav-text">Dockerfile的构建过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#构建缓存"><span class="nav-number">15.</span> <span class="nav-text">构建缓存</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2019 – <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">BugWang</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.1.1</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.1"></script>
+
+  <script src="/js/motion.js?v=7.1.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.1.1"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.1.1"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.1"></script>
+<script src="/js/post-details.js?v=7.1.1"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+  
+
+<script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
+
+
+
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: 'KgOtulOCax9jH1T5tcY9D8A9-gzGzoHsz',
+    appKey: 'b5c08XMXCbO0Qc9JvFmj79LG',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn'
+  });
+</script>
+
+
+
+
+  
+
+
+  
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
